@@ -53,7 +53,7 @@ export async function PUT(request, { params }) {
 
     const { name, email, password, role } = await request.json();
 
-    if (!name && !email && !password && !role) {
+    if (!name && !email && !password) {
       return Response.json(
         { error: "At least one field must be provided for update" },
         { status: 400 }
@@ -61,10 +61,10 @@ export async function PUT(request, { params }) {
     }
 
     const isAdmin = currentUser.role === "ADMIN";
-
-    if (!isAdmin) {
+    
+    if (role && !isAdmin) {
       return Response.json(
-        { error: "Forbidden - You don't have permission" },
+        { error: "Only admins can change user roles" },
         { status: 403 }
       );
     }
