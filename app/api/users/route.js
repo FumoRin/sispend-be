@@ -4,11 +4,13 @@ import prisma from "@/lib/prisma";
  * @swagger
  * /api/users:
  *   get:
- *     summary: Get all users
- *     description: Returns a list of all users
+ *     summary: Mengambil semua data user
+ *     description: Semua data user yang terdapat di database, terkecuali password
+ *     tags:
+ *       - Users
  *     responses:
  *       200:
- *         description: A list of users
+ *         description: data user
  *         content:
  *           application/json:
  *             schema:
@@ -20,6 +22,19 @@ import prisma from "@/lib/prisma";
  *                     type: string
  *                   email:
  *                     type: string
+ *                   role:
+ *                     type: string
+ *                     enum:
+ *                       - admin
+ *                       - user
+ *             example:
+ *               - name: Dimas Faiz
+ *                 email: dimasfaiz@gmailcom
+ *                 role: admin
+ *               - name: Muhammad Syarif
+ *                 email: syarif@gmailcom
+ *                 role: user
+ *
  */
 
 export async function GET(request) {
