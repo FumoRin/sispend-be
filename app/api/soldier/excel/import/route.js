@@ -43,17 +43,20 @@ export async function POST(request) {
       );
     }
 
-    // Fungsi normalisasi: semua dikonversi ke string atau null
     const normalizeValue = (val) => {
       if (val === undefined || val === null) return null;
       return String(val).trim();
     };
 
-    const chunkSize = 200; // bisa sesuaikan
-    let insertedCount = 0;
+    // Ambil semua NRP yang sudah ada di DB
+    const existingNRPs = await prisma.personil.findMany({
+      select: { NRP: true }
+    });
+    const existingNRPSet = new Set(existingNRPs.map(item => item.NRP));
 
-    for (let i = 0; i < rawData.length; i += chunkSize) {
-      const chunk = rawData.slice(i, i + chunkSize).map(row => ({
+    // Filter hanya data baru
+    const newData = rawData
+      .map(row => ({
         NAMA1: normalizeValue(row.NAMA1),
         NAMA2: normalizeValue(row.NAMA2),
         NAMA3: normalizeValue(row.NAMA3),
@@ -106,20 +109,27 @@ export async function POST(request) {
         BLGAL: normalizeValue(row.BLGAL),
         BLGAL1: normalizeValue(row.BLGAL1),
         THGAL: normalizeValue(row.THGAL),
-      }));
+      }))
+      .filter(row => row.NRP && !existingNRPSet.has(row.NRP));
 
-      const result = await prisma.personil.createMany({
-        data: chunk,
-        skipDuplicates: true,
-      });
-      insertedCount += result.count;
+    if (newData.length === 0) {
+      return NextResponse.json(
+        { success: false, message: "Semua data sudah ada di database" },
+        { status: 200 }
+      );
     }
+
+    // Insert data baru
+    const result = await prisma.personil.createMany({
+      data: newData,
+      skipDuplicates: true,
+    });
 
     return NextResponse.json({
       success: true,
-      message: "Data berhasil diimport",
-      importedCount: insertedCount,
-      skippedCount: rawData.length - insertedCount,
+      message: "Data baru berhasil diimport",
+      importedCount: result.count,
+      skippedCount: rawData.length - result.count,
     });
 
   } catch (error) {
