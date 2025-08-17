@@ -18,6 +18,11 @@ export type PrismaPromise<T> = $Public.PrismaPromise<T>
  * 
  */
 export type Users = $Result.DefaultSelection<Prisma.$UsersPayload>
+/**
+ * Model Personil
+ * 
+ */
+export type Personil = $Result.DefaultSelection<Prisma.$PersonilPayload>
 
 /**
  * Enums
@@ -170,6 +175,16 @@ export class PrismaClient<
     * ```
     */
   get users(): Prisma.UsersDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.personil`: Exposes CRUD operations for the **Personil** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Personils
+    * const personils = await prisma.personil.findMany()
+    * ```
+    */
+  get personil(): Prisma.PersonilDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -610,7 +625,8 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    Users: 'Users'
+    Users: 'Users',
+    Personil: 'Personil'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -629,7 +645,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "users"
+      modelProps: "users" | "personil"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -704,6 +720,80 @@ export namespace Prisma {
           count: {
             args: Prisma.UsersCountArgs<ExtArgs>
             result: $Utils.Optional<UsersCountAggregateOutputType> | number
+          }
+        }
+      }
+      Personil: {
+        payload: Prisma.$PersonilPayload<ExtArgs>
+        fields: Prisma.PersonilFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.PersonilFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.PersonilFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>
+          }
+          findFirst: {
+            args: Prisma.PersonilFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.PersonilFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>
+          }
+          findMany: {
+            args: Prisma.PersonilFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>[]
+          }
+          create: {
+            args: Prisma.PersonilCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>
+          }
+          createMany: {
+            args: Prisma.PersonilCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.PersonilCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>[]
+          }
+          delete: {
+            args: Prisma.PersonilDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>
+          }
+          update: {
+            args: Prisma.PersonilUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>
+          }
+          deleteMany: {
+            args: Prisma.PersonilDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.PersonilUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.PersonilUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>[]
+          }
+          upsert: {
+            args: Prisma.PersonilUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$PersonilPayload>
+          }
+          aggregate: {
+            args: Prisma.PersonilAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregatePersonil>
+          }
+          groupBy: {
+            args: Prisma.PersonilGroupByArgs<ExtArgs>
+            result: $Utils.Optional<PersonilGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.PersonilCountArgs<ExtArgs>
+            result: $Utils.Optional<PersonilCountAggregateOutputType> | number
           }
         }
       }
@@ -800,6 +890,7 @@ export namespace Prisma {
   }
   export type GlobalOmitConfig = {
     users?: UsersOmit
+    personil?: PersonilOmit
   }
 
   /* Types for Logging */
@@ -1968,6 +2059,1672 @@ export namespace Prisma {
 
 
   /**
+   * Model Personil
+   */
+
+  export type AggregatePersonil = {
+    _count: PersonilCountAggregateOutputType | null
+    _avg: PersonilAvgAggregateOutputType | null
+    _sum: PersonilSumAggregateOutputType | null
+    _min: PersonilMinAggregateOutputType | null
+    _max: PersonilMaxAggregateOutputType | null
+  }
+
+  export type PersonilAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type PersonilSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type PersonilMinAggregateOutputType = {
+    id: number | null
+    NAMA1: string | null
+    NAMA2: string | null
+    NAMA3: string | null
+    KDPKT: string | null
+    PANGKAT: string | null
+    KORPS: string | null
+    HAR: string | null
+    NRP: string | null
+    KELAHIRAN: string | null
+    JAB1: string | null
+    JAB2: string | null
+    JAB3: string | null
+    JAB4: string | null
+    JAB5: string | null
+    TMTTNI: string | null
+    TGAB: string | null
+    BLAB: string | null
+    THAB: string | null
+    KDSAH: string | null
+    TMTMPP: string | null
+    TGMPP: string | null
+    BLMPP: string | null
+    THMPP: string | null
+    SDTG: string | null
+    SDBL: string | null
+    SDTH: string | null
+    TMTHENTI: string | null
+    TGHT: string | null
+    BLHT: string | null
+    THHT: string | null
+    KET1: string | null
+    KET2: string | null
+    KET3: string | null
+    KET4: string | null
+    KET5: string | null
+    KET6: string | null
+    USUL: string | null
+    FLR: string | null
+    NOSKEP: string | null
+    TGSKEP: string | null
+    KEPPRES: string | null
+    TGKEPP: string | null
+    A: string | null
+    BL: string | null
+    TH: string | null
+    KDM: string | null
+    KEPPANG: string | null
+    TGKEPPANG: string | null
+    TGGAL: string | null
+    BLGAL: string | null
+    BLGAL1: string | null
+    THGAL: string | null
+    createdAt: Date | null
+  }
+
+  export type PersonilMaxAggregateOutputType = {
+    id: number | null
+    NAMA1: string | null
+    NAMA2: string | null
+    NAMA3: string | null
+    KDPKT: string | null
+    PANGKAT: string | null
+    KORPS: string | null
+    HAR: string | null
+    NRP: string | null
+    KELAHIRAN: string | null
+    JAB1: string | null
+    JAB2: string | null
+    JAB3: string | null
+    JAB4: string | null
+    JAB5: string | null
+    TMTTNI: string | null
+    TGAB: string | null
+    BLAB: string | null
+    THAB: string | null
+    KDSAH: string | null
+    TMTMPP: string | null
+    TGMPP: string | null
+    BLMPP: string | null
+    THMPP: string | null
+    SDTG: string | null
+    SDBL: string | null
+    SDTH: string | null
+    TMTHENTI: string | null
+    TGHT: string | null
+    BLHT: string | null
+    THHT: string | null
+    KET1: string | null
+    KET2: string | null
+    KET3: string | null
+    KET4: string | null
+    KET5: string | null
+    KET6: string | null
+    USUL: string | null
+    FLR: string | null
+    NOSKEP: string | null
+    TGSKEP: string | null
+    KEPPRES: string | null
+    TGKEPP: string | null
+    A: string | null
+    BL: string | null
+    TH: string | null
+    KDM: string | null
+    KEPPANG: string | null
+    TGKEPPANG: string | null
+    TGGAL: string | null
+    BLGAL: string | null
+    BLGAL1: string | null
+    THGAL: string | null
+    createdAt: Date | null
+  }
+
+  export type PersonilCountAggregateOutputType = {
+    id: number
+    NAMA1: number
+    NAMA2: number
+    NAMA3: number
+    KDPKT: number
+    PANGKAT: number
+    KORPS: number
+    HAR: number
+    NRP: number
+    KELAHIRAN: number
+    JAB1: number
+    JAB2: number
+    JAB3: number
+    JAB4: number
+    JAB5: number
+    TMTTNI: number
+    TGAB: number
+    BLAB: number
+    THAB: number
+    KDSAH: number
+    TMTMPP: number
+    TGMPP: number
+    BLMPP: number
+    THMPP: number
+    SDTG: number
+    SDBL: number
+    SDTH: number
+    TMTHENTI: number
+    TGHT: number
+    BLHT: number
+    THHT: number
+    KET1: number
+    KET2: number
+    KET3: number
+    KET4: number
+    KET5: number
+    KET6: number
+    USUL: number
+    FLR: number
+    NOSKEP: number
+    TGSKEP: number
+    KEPPRES: number
+    TGKEPP: number
+    A: number
+    BL: number
+    TH: number
+    KDM: number
+    KEPPANG: number
+    TGKEPPANG: number
+    TGGAL: number
+    BLGAL: number
+    BLGAL1: number
+    THGAL: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type PersonilAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type PersonilSumAggregateInputType = {
+    id?: true
+  }
+
+  export type PersonilMinAggregateInputType = {
+    id?: true
+    NAMA1?: true
+    NAMA2?: true
+    NAMA3?: true
+    KDPKT?: true
+    PANGKAT?: true
+    KORPS?: true
+    HAR?: true
+    NRP?: true
+    KELAHIRAN?: true
+    JAB1?: true
+    JAB2?: true
+    JAB3?: true
+    JAB4?: true
+    JAB5?: true
+    TMTTNI?: true
+    TGAB?: true
+    BLAB?: true
+    THAB?: true
+    KDSAH?: true
+    TMTMPP?: true
+    TGMPP?: true
+    BLMPP?: true
+    THMPP?: true
+    SDTG?: true
+    SDBL?: true
+    SDTH?: true
+    TMTHENTI?: true
+    TGHT?: true
+    BLHT?: true
+    THHT?: true
+    KET1?: true
+    KET2?: true
+    KET3?: true
+    KET4?: true
+    KET5?: true
+    KET6?: true
+    USUL?: true
+    FLR?: true
+    NOSKEP?: true
+    TGSKEP?: true
+    KEPPRES?: true
+    TGKEPP?: true
+    A?: true
+    BL?: true
+    TH?: true
+    KDM?: true
+    KEPPANG?: true
+    TGKEPPANG?: true
+    TGGAL?: true
+    BLGAL?: true
+    BLGAL1?: true
+    THGAL?: true
+    createdAt?: true
+  }
+
+  export type PersonilMaxAggregateInputType = {
+    id?: true
+    NAMA1?: true
+    NAMA2?: true
+    NAMA3?: true
+    KDPKT?: true
+    PANGKAT?: true
+    KORPS?: true
+    HAR?: true
+    NRP?: true
+    KELAHIRAN?: true
+    JAB1?: true
+    JAB2?: true
+    JAB3?: true
+    JAB4?: true
+    JAB5?: true
+    TMTTNI?: true
+    TGAB?: true
+    BLAB?: true
+    THAB?: true
+    KDSAH?: true
+    TMTMPP?: true
+    TGMPP?: true
+    BLMPP?: true
+    THMPP?: true
+    SDTG?: true
+    SDBL?: true
+    SDTH?: true
+    TMTHENTI?: true
+    TGHT?: true
+    BLHT?: true
+    THHT?: true
+    KET1?: true
+    KET2?: true
+    KET3?: true
+    KET4?: true
+    KET5?: true
+    KET6?: true
+    USUL?: true
+    FLR?: true
+    NOSKEP?: true
+    TGSKEP?: true
+    KEPPRES?: true
+    TGKEPP?: true
+    A?: true
+    BL?: true
+    TH?: true
+    KDM?: true
+    KEPPANG?: true
+    TGKEPPANG?: true
+    TGGAL?: true
+    BLGAL?: true
+    BLGAL1?: true
+    THGAL?: true
+    createdAt?: true
+  }
+
+  export type PersonilCountAggregateInputType = {
+    id?: true
+    NAMA1?: true
+    NAMA2?: true
+    NAMA3?: true
+    KDPKT?: true
+    PANGKAT?: true
+    KORPS?: true
+    HAR?: true
+    NRP?: true
+    KELAHIRAN?: true
+    JAB1?: true
+    JAB2?: true
+    JAB3?: true
+    JAB4?: true
+    JAB5?: true
+    TMTTNI?: true
+    TGAB?: true
+    BLAB?: true
+    THAB?: true
+    KDSAH?: true
+    TMTMPP?: true
+    TGMPP?: true
+    BLMPP?: true
+    THMPP?: true
+    SDTG?: true
+    SDBL?: true
+    SDTH?: true
+    TMTHENTI?: true
+    TGHT?: true
+    BLHT?: true
+    THHT?: true
+    KET1?: true
+    KET2?: true
+    KET3?: true
+    KET4?: true
+    KET5?: true
+    KET6?: true
+    USUL?: true
+    FLR?: true
+    NOSKEP?: true
+    TGSKEP?: true
+    KEPPRES?: true
+    TGKEPP?: true
+    A?: true
+    BL?: true
+    TH?: true
+    KDM?: true
+    KEPPANG?: true
+    TGKEPPANG?: true
+    TGGAL?: true
+    BLGAL?: true
+    BLGAL1?: true
+    THGAL?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type PersonilAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Personil to aggregate.
+     */
+    where?: PersonilWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Personils to fetch.
+     */
+    orderBy?: PersonilOrderByWithRelationInput | PersonilOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: PersonilWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Personils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Personils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Personils
+    **/
+    _count?: true | PersonilCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: PersonilAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: PersonilSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: PersonilMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: PersonilMaxAggregateInputType
+  }
+
+  export type GetPersonilAggregateType<T extends PersonilAggregateArgs> = {
+        [P in keyof T & keyof AggregatePersonil]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregatePersonil[P]>
+      : GetScalarType<T[P], AggregatePersonil[P]>
+  }
+
+
+
+
+  export type PersonilGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PersonilWhereInput
+    orderBy?: PersonilOrderByWithAggregationInput | PersonilOrderByWithAggregationInput[]
+    by: PersonilScalarFieldEnum[] | PersonilScalarFieldEnum
+    having?: PersonilScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: PersonilCountAggregateInputType | true
+    _avg?: PersonilAvgAggregateInputType
+    _sum?: PersonilSumAggregateInputType
+    _min?: PersonilMinAggregateInputType
+    _max?: PersonilMaxAggregateInputType
+  }
+
+  export type PersonilGroupByOutputType = {
+    id: number
+    NAMA1: string | null
+    NAMA2: string | null
+    NAMA3: string | null
+    KDPKT: string | null
+    PANGKAT: string | null
+    KORPS: string | null
+    HAR: string | null
+    NRP: string | null
+    KELAHIRAN: string | null
+    JAB1: string | null
+    JAB2: string | null
+    JAB3: string | null
+    JAB4: string | null
+    JAB5: string | null
+    TMTTNI: string | null
+    TGAB: string | null
+    BLAB: string | null
+    THAB: string | null
+    KDSAH: string | null
+    TMTMPP: string | null
+    TGMPP: string | null
+    BLMPP: string | null
+    THMPP: string | null
+    SDTG: string | null
+    SDBL: string | null
+    SDTH: string | null
+    TMTHENTI: string | null
+    TGHT: string | null
+    BLHT: string | null
+    THHT: string | null
+    KET1: string | null
+    KET2: string | null
+    KET3: string | null
+    KET4: string | null
+    KET5: string | null
+    KET6: string | null
+    USUL: string | null
+    FLR: string | null
+    NOSKEP: string | null
+    TGSKEP: string | null
+    KEPPRES: string | null
+    TGKEPP: string | null
+    A: string | null
+    BL: string | null
+    TH: string | null
+    KDM: string | null
+    KEPPANG: string | null
+    TGKEPPANG: string | null
+    TGGAL: string | null
+    BLGAL: string | null
+    BLGAL1: string | null
+    THGAL: string | null
+    createdAt: Date
+    _count: PersonilCountAggregateOutputType | null
+    _avg: PersonilAvgAggregateOutputType | null
+    _sum: PersonilSumAggregateOutputType | null
+    _min: PersonilMinAggregateOutputType | null
+    _max: PersonilMaxAggregateOutputType | null
+  }
+
+  type GetPersonilGroupByPayload<T extends PersonilGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<PersonilGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof PersonilGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], PersonilGroupByOutputType[P]>
+            : GetScalarType<T[P], PersonilGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type PersonilSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    NAMA1?: boolean
+    NAMA2?: boolean
+    NAMA3?: boolean
+    KDPKT?: boolean
+    PANGKAT?: boolean
+    KORPS?: boolean
+    HAR?: boolean
+    NRP?: boolean
+    KELAHIRAN?: boolean
+    JAB1?: boolean
+    JAB2?: boolean
+    JAB3?: boolean
+    JAB4?: boolean
+    JAB5?: boolean
+    TMTTNI?: boolean
+    TGAB?: boolean
+    BLAB?: boolean
+    THAB?: boolean
+    KDSAH?: boolean
+    TMTMPP?: boolean
+    TGMPP?: boolean
+    BLMPP?: boolean
+    THMPP?: boolean
+    SDTG?: boolean
+    SDBL?: boolean
+    SDTH?: boolean
+    TMTHENTI?: boolean
+    TGHT?: boolean
+    BLHT?: boolean
+    THHT?: boolean
+    KET1?: boolean
+    KET2?: boolean
+    KET3?: boolean
+    KET4?: boolean
+    KET5?: boolean
+    KET6?: boolean
+    USUL?: boolean
+    FLR?: boolean
+    NOSKEP?: boolean
+    TGSKEP?: boolean
+    KEPPRES?: boolean
+    TGKEPP?: boolean
+    A?: boolean
+    BL?: boolean
+    TH?: boolean
+    KDM?: boolean
+    KEPPANG?: boolean
+    TGKEPPANG?: boolean
+    TGGAL?: boolean
+    BLGAL?: boolean
+    BLGAL1?: boolean
+    THGAL?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["personil"]>
+
+  export type PersonilSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    NAMA1?: boolean
+    NAMA2?: boolean
+    NAMA3?: boolean
+    KDPKT?: boolean
+    PANGKAT?: boolean
+    KORPS?: boolean
+    HAR?: boolean
+    NRP?: boolean
+    KELAHIRAN?: boolean
+    JAB1?: boolean
+    JAB2?: boolean
+    JAB3?: boolean
+    JAB4?: boolean
+    JAB5?: boolean
+    TMTTNI?: boolean
+    TGAB?: boolean
+    BLAB?: boolean
+    THAB?: boolean
+    KDSAH?: boolean
+    TMTMPP?: boolean
+    TGMPP?: boolean
+    BLMPP?: boolean
+    THMPP?: boolean
+    SDTG?: boolean
+    SDBL?: boolean
+    SDTH?: boolean
+    TMTHENTI?: boolean
+    TGHT?: boolean
+    BLHT?: boolean
+    THHT?: boolean
+    KET1?: boolean
+    KET2?: boolean
+    KET3?: boolean
+    KET4?: boolean
+    KET5?: boolean
+    KET6?: boolean
+    USUL?: boolean
+    FLR?: boolean
+    NOSKEP?: boolean
+    TGSKEP?: boolean
+    KEPPRES?: boolean
+    TGKEPP?: boolean
+    A?: boolean
+    BL?: boolean
+    TH?: boolean
+    KDM?: boolean
+    KEPPANG?: boolean
+    TGKEPPANG?: boolean
+    TGGAL?: boolean
+    BLGAL?: boolean
+    BLGAL1?: boolean
+    THGAL?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["personil"]>
+
+  export type PersonilSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    NAMA1?: boolean
+    NAMA2?: boolean
+    NAMA3?: boolean
+    KDPKT?: boolean
+    PANGKAT?: boolean
+    KORPS?: boolean
+    HAR?: boolean
+    NRP?: boolean
+    KELAHIRAN?: boolean
+    JAB1?: boolean
+    JAB2?: boolean
+    JAB3?: boolean
+    JAB4?: boolean
+    JAB5?: boolean
+    TMTTNI?: boolean
+    TGAB?: boolean
+    BLAB?: boolean
+    THAB?: boolean
+    KDSAH?: boolean
+    TMTMPP?: boolean
+    TGMPP?: boolean
+    BLMPP?: boolean
+    THMPP?: boolean
+    SDTG?: boolean
+    SDBL?: boolean
+    SDTH?: boolean
+    TMTHENTI?: boolean
+    TGHT?: boolean
+    BLHT?: boolean
+    THHT?: boolean
+    KET1?: boolean
+    KET2?: boolean
+    KET3?: boolean
+    KET4?: boolean
+    KET5?: boolean
+    KET6?: boolean
+    USUL?: boolean
+    FLR?: boolean
+    NOSKEP?: boolean
+    TGSKEP?: boolean
+    KEPPRES?: boolean
+    TGKEPP?: boolean
+    A?: boolean
+    BL?: boolean
+    TH?: boolean
+    KDM?: boolean
+    KEPPANG?: boolean
+    TGKEPPANG?: boolean
+    TGGAL?: boolean
+    BLGAL?: boolean
+    BLGAL1?: boolean
+    THGAL?: boolean
+    createdAt?: boolean
+  }, ExtArgs["result"]["personil"]>
+
+  export type PersonilSelectScalar = {
+    id?: boolean
+    NAMA1?: boolean
+    NAMA2?: boolean
+    NAMA3?: boolean
+    KDPKT?: boolean
+    PANGKAT?: boolean
+    KORPS?: boolean
+    HAR?: boolean
+    NRP?: boolean
+    KELAHIRAN?: boolean
+    JAB1?: boolean
+    JAB2?: boolean
+    JAB3?: boolean
+    JAB4?: boolean
+    JAB5?: boolean
+    TMTTNI?: boolean
+    TGAB?: boolean
+    BLAB?: boolean
+    THAB?: boolean
+    KDSAH?: boolean
+    TMTMPP?: boolean
+    TGMPP?: boolean
+    BLMPP?: boolean
+    THMPP?: boolean
+    SDTG?: boolean
+    SDBL?: boolean
+    SDTH?: boolean
+    TMTHENTI?: boolean
+    TGHT?: boolean
+    BLHT?: boolean
+    THHT?: boolean
+    KET1?: boolean
+    KET2?: boolean
+    KET3?: boolean
+    KET4?: boolean
+    KET5?: boolean
+    KET6?: boolean
+    USUL?: boolean
+    FLR?: boolean
+    NOSKEP?: boolean
+    TGSKEP?: boolean
+    KEPPRES?: boolean
+    TGKEPP?: boolean
+    A?: boolean
+    BL?: boolean
+    TH?: boolean
+    KDM?: boolean
+    KEPPANG?: boolean
+    TGKEPPANG?: boolean
+    TGGAL?: boolean
+    BLGAL?: boolean
+    BLGAL1?: boolean
+    THGAL?: boolean
+    createdAt?: boolean
+  }
+
+  export type PersonilOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "NAMA1" | "NAMA2" | "NAMA3" | "KDPKT" | "PANGKAT" | "KORPS" | "HAR" | "NRP" | "KELAHIRAN" | "JAB1" | "JAB2" | "JAB3" | "JAB4" | "JAB5" | "TMTTNI" | "TGAB" | "BLAB" | "THAB" | "KDSAH" | "TMTMPP" | "TGMPP" | "BLMPP" | "THMPP" | "SDTG" | "SDBL" | "SDTH" | "TMTHENTI" | "TGHT" | "BLHT" | "THHT" | "KET1" | "KET2" | "KET3" | "KET4" | "KET5" | "KET6" | "USUL" | "FLR" | "NOSKEP" | "TGSKEP" | "KEPPRES" | "TGKEPP" | "A" | "BL" | "TH" | "KDM" | "KEPPANG" | "TGKEPPANG" | "TGGAL" | "BLGAL" | "BLGAL1" | "THGAL" | "createdAt", ExtArgs["result"]["personil"]>
+
+  export type $PersonilPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Personil"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      NAMA1: string | null
+      NAMA2: string | null
+      NAMA3: string | null
+      KDPKT: string | null
+      PANGKAT: string | null
+      KORPS: string | null
+      HAR: string | null
+      NRP: string | null
+      KELAHIRAN: string | null
+      JAB1: string | null
+      JAB2: string | null
+      JAB3: string | null
+      JAB4: string | null
+      JAB5: string | null
+      TMTTNI: string | null
+      TGAB: string | null
+      BLAB: string | null
+      THAB: string | null
+      KDSAH: string | null
+      TMTMPP: string | null
+      TGMPP: string | null
+      BLMPP: string | null
+      THMPP: string | null
+      SDTG: string | null
+      SDBL: string | null
+      SDTH: string | null
+      TMTHENTI: string | null
+      TGHT: string | null
+      BLHT: string | null
+      THHT: string | null
+      KET1: string | null
+      KET2: string | null
+      KET3: string | null
+      KET4: string | null
+      KET5: string | null
+      KET6: string | null
+      USUL: string | null
+      FLR: string | null
+      NOSKEP: string | null
+      TGSKEP: string | null
+      KEPPRES: string | null
+      TGKEPP: string | null
+      A: string | null
+      BL: string | null
+      TH: string | null
+      KDM: string | null
+      KEPPANG: string | null
+      TGKEPPANG: string | null
+      TGGAL: string | null
+      BLGAL: string | null
+      BLGAL1: string | null
+      THGAL: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["personil"]>
+    composites: {}
+  }
+
+  type PersonilGetPayload<S extends boolean | null | undefined | PersonilDefaultArgs> = $Result.GetResult<Prisma.$PersonilPayload, S>
+
+  type PersonilCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<PersonilFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: PersonilCountAggregateInputType | true
+    }
+
+  export interface PersonilDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Personil'], meta: { name: 'Personil' } }
+    /**
+     * Find zero or one Personil that matches the filter.
+     * @param {PersonilFindUniqueArgs} args - Arguments to find a Personil
+     * @example
+     * // Get one Personil
+     * const personil = await prisma.personil.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends PersonilFindUniqueArgs>(args: SelectSubset<T, PersonilFindUniqueArgs<ExtArgs>>): Prisma__PersonilClient<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Personil that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {PersonilFindUniqueOrThrowArgs} args - Arguments to find a Personil
+     * @example
+     * // Get one Personil
+     * const personil = await prisma.personil.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends PersonilFindUniqueOrThrowArgs>(args: SelectSubset<T, PersonilFindUniqueOrThrowArgs<ExtArgs>>): Prisma__PersonilClient<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Personil that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonilFindFirstArgs} args - Arguments to find a Personil
+     * @example
+     * // Get one Personil
+     * const personil = await prisma.personil.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends PersonilFindFirstArgs>(args?: SelectSubset<T, PersonilFindFirstArgs<ExtArgs>>): Prisma__PersonilClient<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Personil that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonilFindFirstOrThrowArgs} args - Arguments to find a Personil
+     * @example
+     * // Get one Personil
+     * const personil = await prisma.personil.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends PersonilFindFirstOrThrowArgs>(args?: SelectSubset<T, PersonilFindFirstOrThrowArgs<ExtArgs>>): Prisma__PersonilClient<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Personils that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonilFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Personils
+     * const personils = await prisma.personil.findMany()
+     * 
+     * // Get first 10 Personils
+     * const personils = await prisma.personil.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const personilWithIdOnly = await prisma.personil.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends PersonilFindManyArgs>(args?: SelectSubset<T, PersonilFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Personil.
+     * @param {PersonilCreateArgs} args - Arguments to create a Personil.
+     * @example
+     * // Create one Personil
+     * const Personil = await prisma.personil.create({
+     *   data: {
+     *     // ... data to create a Personil
+     *   }
+     * })
+     * 
+     */
+    create<T extends PersonilCreateArgs>(args: SelectSubset<T, PersonilCreateArgs<ExtArgs>>): Prisma__PersonilClient<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Personils.
+     * @param {PersonilCreateManyArgs} args - Arguments to create many Personils.
+     * @example
+     * // Create many Personils
+     * const personil = await prisma.personil.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends PersonilCreateManyArgs>(args?: SelectSubset<T, PersonilCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Personils and returns the data saved in the database.
+     * @param {PersonilCreateManyAndReturnArgs} args - Arguments to create many Personils.
+     * @example
+     * // Create many Personils
+     * const personil = await prisma.personil.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Personils and only return the `id`
+     * const personilWithIdOnly = await prisma.personil.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends PersonilCreateManyAndReturnArgs>(args?: SelectSubset<T, PersonilCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Personil.
+     * @param {PersonilDeleteArgs} args - Arguments to delete one Personil.
+     * @example
+     * // Delete one Personil
+     * const Personil = await prisma.personil.delete({
+     *   where: {
+     *     // ... filter to delete one Personil
+     *   }
+     * })
+     * 
+     */
+    delete<T extends PersonilDeleteArgs>(args: SelectSubset<T, PersonilDeleteArgs<ExtArgs>>): Prisma__PersonilClient<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Personil.
+     * @param {PersonilUpdateArgs} args - Arguments to update one Personil.
+     * @example
+     * // Update one Personil
+     * const personil = await prisma.personil.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends PersonilUpdateArgs>(args: SelectSubset<T, PersonilUpdateArgs<ExtArgs>>): Prisma__PersonilClient<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Personils.
+     * @param {PersonilDeleteManyArgs} args - Arguments to filter Personils to delete.
+     * @example
+     * // Delete a few Personils
+     * const { count } = await prisma.personil.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends PersonilDeleteManyArgs>(args?: SelectSubset<T, PersonilDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Personils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonilUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Personils
+     * const personil = await prisma.personil.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends PersonilUpdateManyArgs>(args: SelectSubset<T, PersonilUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Personils and returns the data updated in the database.
+     * @param {PersonilUpdateManyAndReturnArgs} args - Arguments to update many Personils.
+     * @example
+     * // Update many Personils
+     * const personil = await prisma.personil.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Personils and only return the `id`
+     * const personilWithIdOnly = await prisma.personil.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends PersonilUpdateManyAndReturnArgs>(args: SelectSubset<T, PersonilUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Personil.
+     * @param {PersonilUpsertArgs} args - Arguments to update or create a Personil.
+     * @example
+     * // Update or create a Personil
+     * const personil = await prisma.personil.upsert({
+     *   create: {
+     *     // ... data to create a Personil
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Personil we want to update
+     *   }
+     * })
+     */
+    upsert<T extends PersonilUpsertArgs>(args: SelectSubset<T, PersonilUpsertArgs<ExtArgs>>): Prisma__PersonilClient<$Result.GetResult<Prisma.$PersonilPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Personils.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonilCountArgs} args - Arguments to filter Personils to count.
+     * @example
+     * // Count the number of Personils
+     * const count = await prisma.personil.count({
+     *   where: {
+     *     // ... the filter for the Personils we want to count
+     *   }
+     * })
+    **/
+    count<T extends PersonilCountArgs>(
+      args?: Subset<T, PersonilCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], PersonilCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Personil.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonilAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends PersonilAggregateArgs>(args: Subset<T, PersonilAggregateArgs>): Prisma.PrismaPromise<GetPersonilAggregateType<T>>
+
+    /**
+     * Group by Personil.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {PersonilGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends PersonilGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: PersonilGroupByArgs['orderBy'] }
+        : { orderBy?: PersonilGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, PersonilGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetPersonilGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Personil model
+   */
+  readonly fields: PersonilFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Personil.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__PersonilClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Personil model
+   */
+  interface PersonilFieldRefs {
+    readonly id: FieldRef<"Personil", 'Int'>
+    readonly NAMA1: FieldRef<"Personil", 'String'>
+    readonly NAMA2: FieldRef<"Personil", 'String'>
+    readonly NAMA3: FieldRef<"Personil", 'String'>
+    readonly KDPKT: FieldRef<"Personil", 'String'>
+    readonly PANGKAT: FieldRef<"Personil", 'String'>
+    readonly KORPS: FieldRef<"Personil", 'String'>
+    readonly HAR: FieldRef<"Personil", 'String'>
+    readonly NRP: FieldRef<"Personil", 'String'>
+    readonly KELAHIRAN: FieldRef<"Personil", 'String'>
+    readonly JAB1: FieldRef<"Personil", 'String'>
+    readonly JAB2: FieldRef<"Personil", 'String'>
+    readonly JAB3: FieldRef<"Personil", 'String'>
+    readonly JAB4: FieldRef<"Personil", 'String'>
+    readonly JAB5: FieldRef<"Personil", 'String'>
+    readonly TMTTNI: FieldRef<"Personil", 'String'>
+    readonly TGAB: FieldRef<"Personil", 'String'>
+    readonly BLAB: FieldRef<"Personil", 'String'>
+    readonly THAB: FieldRef<"Personil", 'String'>
+    readonly KDSAH: FieldRef<"Personil", 'String'>
+    readonly TMTMPP: FieldRef<"Personil", 'String'>
+    readonly TGMPP: FieldRef<"Personil", 'String'>
+    readonly BLMPP: FieldRef<"Personil", 'String'>
+    readonly THMPP: FieldRef<"Personil", 'String'>
+    readonly SDTG: FieldRef<"Personil", 'String'>
+    readonly SDBL: FieldRef<"Personil", 'String'>
+    readonly SDTH: FieldRef<"Personil", 'String'>
+    readonly TMTHENTI: FieldRef<"Personil", 'String'>
+    readonly TGHT: FieldRef<"Personil", 'String'>
+    readonly BLHT: FieldRef<"Personil", 'String'>
+    readonly THHT: FieldRef<"Personil", 'String'>
+    readonly KET1: FieldRef<"Personil", 'String'>
+    readonly KET2: FieldRef<"Personil", 'String'>
+    readonly KET3: FieldRef<"Personil", 'String'>
+    readonly KET4: FieldRef<"Personil", 'String'>
+    readonly KET5: FieldRef<"Personil", 'String'>
+    readonly KET6: FieldRef<"Personil", 'String'>
+    readonly USUL: FieldRef<"Personil", 'String'>
+    readonly FLR: FieldRef<"Personil", 'String'>
+    readonly NOSKEP: FieldRef<"Personil", 'String'>
+    readonly TGSKEP: FieldRef<"Personil", 'String'>
+    readonly KEPPRES: FieldRef<"Personil", 'String'>
+    readonly TGKEPP: FieldRef<"Personil", 'String'>
+    readonly A: FieldRef<"Personil", 'String'>
+    readonly BL: FieldRef<"Personil", 'String'>
+    readonly TH: FieldRef<"Personil", 'String'>
+    readonly KDM: FieldRef<"Personil", 'String'>
+    readonly KEPPANG: FieldRef<"Personil", 'String'>
+    readonly TGKEPPANG: FieldRef<"Personil", 'String'>
+    readonly TGGAL: FieldRef<"Personil", 'String'>
+    readonly BLGAL: FieldRef<"Personil", 'String'>
+    readonly BLGAL1: FieldRef<"Personil", 'String'>
+    readonly THGAL: FieldRef<"Personil", 'String'>
+    readonly createdAt: FieldRef<"Personil", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Personil findUnique
+   */
+  export type PersonilFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * Filter, which Personil to fetch.
+     */
+    where: PersonilWhereUniqueInput
+  }
+
+  /**
+   * Personil findUniqueOrThrow
+   */
+  export type PersonilFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * Filter, which Personil to fetch.
+     */
+    where: PersonilWhereUniqueInput
+  }
+
+  /**
+   * Personil findFirst
+   */
+  export type PersonilFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * Filter, which Personil to fetch.
+     */
+    where?: PersonilWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Personils to fetch.
+     */
+    orderBy?: PersonilOrderByWithRelationInput | PersonilOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Personils.
+     */
+    cursor?: PersonilWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Personils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Personils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Personils.
+     */
+    distinct?: PersonilScalarFieldEnum | PersonilScalarFieldEnum[]
+  }
+
+  /**
+   * Personil findFirstOrThrow
+   */
+  export type PersonilFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * Filter, which Personil to fetch.
+     */
+    where?: PersonilWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Personils to fetch.
+     */
+    orderBy?: PersonilOrderByWithRelationInput | PersonilOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Personils.
+     */
+    cursor?: PersonilWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Personils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Personils.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Personils.
+     */
+    distinct?: PersonilScalarFieldEnum | PersonilScalarFieldEnum[]
+  }
+
+  /**
+   * Personil findMany
+   */
+  export type PersonilFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * Filter, which Personils to fetch.
+     */
+    where?: PersonilWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Personils to fetch.
+     */
+    orderBy?: PersonilOrderByWithRelationInput | PersonilOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Personils.
+     */
+    cursor?: PersonilWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Personils from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Personils.
+     */
+    skip?: number
+    distinct?: PersonilScalarFieldEnum | PersonilScalarFieldEnum[]
+  }
+
+  /**
+   * Personil create
+   */
+  export type PersonilCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Personil.
+     */
+    data?: XOR<PersonilCreateInput, PersonilUncheckedCreateInput>
+  }
+
+  /**
+   * Personil createMany
+   */
+  export type PersonilCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Personils.
+     */
+    data: PersonilCreateManyInput | PersonilCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Personil createManyAndReturn
+   */
+  export type PersonilCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * The data used to create many Personils.
+     */
+    data: PersonilCreateManyInput | PersonilCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Personil update
+   */
+  export type PersonilUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Personil.
+     */
+    data: XOR<PersonilUpdateInput, PersonilUncheckedUpdateInput>
+    /**
+     * Choose, which Personil to update.
+     */
+    where: PersonilWhereUniqueInput
+  }
+
+  /**
+   * Personil updateMany
+   */
+  export type PersonilUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Personils.
+     */
+    data: XOR<PersonilUpdateManyMutationInput, PersonilUncheckedUpdateManyInput>
+    /**
+     * Filter which Personils to update
+     */
+    where?: PersonilWhereInput
+    /**
+     * Limit how many Personils to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Personil updateManyAndReturn
+   */
+  export type PersonilUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * The data used to update Personils.
+     */
+    data: XOR<PersonilUpdateManyMutationInput, PersonilUncheckedUpdateManyInput>
+    /**
+     * Filter which Personils to update
+     */
+    where?: PersonilWhereInput
+    /**
+     * Limit how many Personils to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Personil upsert
+   */
+  export type PersonilUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Personil to update in case it exists.
+     */
+    where: PersonilWhereUniqueInput
+    /**
+     * In case the Personil found by the `where` argument doesn't exist, create a new Personil with this data.
+     */
+    create: XOR<PersonilCreateInput, PersonilUncheckedCreateInput>
+    /**
+     * In case the Personil was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<PersonilUpdateInput, PersonilUncheckedUpdateInput>
+  }
+
+  /**
+   * Personil delete
+   */
+  export type PersonilDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+    /**
+     * Filter which Personil to delete.
+     */
+    where: PersonilWhereUniqueInput
+  }
+
+  /**
+   * Personil deleteMany
+   */
+  export type PersonilDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Personils to delete
+     */
+    where?: PersonilWhereInput
+    /**
+     * Limit how many Personils to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Personil without action
+   */
+  export type PersonilDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Personil
+     */
+    select?: PersonilSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Personil
+     */
+    omit?: PersonilOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -1993,6 +3750,66 @@ export namespace Prisma {
   };
 
   export type UsersScalarFieldEnum = (typeof UsersScalarFieldEnum)[keyof typeof UsersScalarFieldEnum]
+
+
+  export const PersonilScalarFieldEnum: {
+    id: 'id',
+    NAMA1: 'NAMA1',
+    NAMA2: 'NAMA2',
+    NAMA3: 'NAMA3',
+    KDPKT: 'KDPKT',
+    PANGKAT: 'PANGKAT',
+    KORPS: 'KORPS',
+    HAR: 'HAR',
+    NRP: 'NRP',
+    KELAHIRAN: 'KELAHIRAN',
+    JAB1: 'JAB1',
+    JAB2: 'JAB2',
+    JAB3: 'JAB3',
+    JAB4: 'JAB4',
+    JAB5: 'JAB5',
+    TMTTNI: 'TMTTNI',
+    TGAB: 'TGAB',
+    BLAB: 'BLAB',
+    THAB: 'THAB',
+    KDSAH: 'KDSAH',
+    TMTMPP: 'TMTMPP',
+    TGMPP: 'TGMPP',
+    BLMPP: 'BLMPP',
+    THMPP: 'THMPP',
+    SDTG: 'SDTG',
+    SDBL: 'SDBL',
+    SDTH: 'SDTH',
+    TMTHENTI: 'TMTHENTI',
+    TGHT: 'TGHT',
+    BLHT: 'BLHT',
+    THHT: 'THHT',
+    KET1: 'KET1',
+    KET2: 'KET2',
+    KET3: 'KET3',
+    KET4: 'KET4',
+    KET5: 'KET5',
+    KET6: 'KET6',
+    USUL: 'USUL',
+    FLR: 'FLR',
+    NOSKEP: 'NOSKEP',
+    TGSKEP: 'TGSKEP',
+    KEPPRES: 'KEPPRES',
+    TGKEPP: 'TGKEPP',
+    A: 'A',
+    BL: 'BL',
+    TH: 'TH',
+    KDM: 'KDM',
+    KEPPANG: 'KEPPANG',
+    TGKEPPANG: 'TGKEPPANG',
+    TGGAL: 'TGGAL',
+    BLGAL: 'BLGAL',
+    BLGAL1: 'BLGAL1',
+    THGAL: 'THGAL',
+    createdAt: 'createdAt'
+  };
+
+  export type PersonilScalarFieldEnum = (typeof PersonilScalarFieldEnum)[keyof typeof PersonilScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -2166,6 +3983,305 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"Users"> | Date | string
   }
 
+  export type PersonilWhereInput = {
+    AND?: PersonilWhereInput | PersonilWhereInput[]
+    OR?: PersonilWhereInput[]
+    NOT?: PersonilWhereInput | PersonilWhereInput[]
+    id?: IntFilter<"Personil"> | number
+    NAMA1?: StringNullableFilter<"Personil"> | string | null
+    NAMA2?: StringNullableFilter<"Personil"> | string | null
+    NAMA3?: StringNullableFilter<"Personil"> | string | null
+    KDPKT?: StringNullableFilter<"Personil"> | string | null
+    PANGKAT?: StringNullableFilter<"Personil"> | string | null
+    KORPS?: StringNullableFilter<"Personil"> | string | null
+    HAR?: StringNullableFilter<"Personil"> | string | null
+    NRP?: StringNullableFilter<"Personil"> | string | null
+    KELAHIRAN?: StringNullableFilter<"Personil"> | string | null
+    JAB1?: StringNullableFilter<"Personil"> | string | null
+    JAB2?: StringNullableFilter<"Personil"> | string | null
+    JAB3?: StringNullableFilter<"Personil"> | string | null
+    JAB4?: StringNullableFilter<"Personil"> | string | null
+    JAB5?: StringNullableFilter<"Personil"> | string | null
+    TMTTNI?: StringNullableFilter<"Personil"> | string | null
+    TGAB?: StringNullableFilter<"Personil"> | string | null
+    BLAB?: StringNullableFilter<"Personil"> | string | null
+    THAB?: StringNullableFilter<"Personil"> | string | null
+    KDSAH?: StringNullableFilter<"Personil"> | string | null
+    TMTMPP?: StringNullableFilter<"Personil"> | string | null
+    TGMPP?: StringNullableFilter<"Personil"> | string | null
+    BLMPP?: StringNullableFilter<"Personil"> | string | null
+    THMPP?: StringNullableFilter<"Personil"> | string | null
+    SDTG?: StringNullableFilter<"Personil"> | string | null
+    SDBL?: StringNullableFilter<"Personil"> | string | null
+    SDTH?: StringNullableFilter<"Personil"> | string | null
+    TMTHENTI?: StringNullableFilter<"Personil"> | string | null
+    TGHT?: StringNullableFilter<"Personil"> | string | null
+    BLHT?: StringNullableFilter<"Personil"> | string | null
+    THHT?: StringNullableFilter<"Personil"> | string | null
+    KET1?: StringNullableFilter<"Personil"> | string | null
+    KET2?: StringNullableFilter<"Personil"> | string | null
+    KET3?: StringNullableFilter<"Personil"> | string | null
+    KET4?: StringNullableFilter<"Personil"> | string | null
+    KET5?: StringNullableFilter<"Personil"> | string | null
+    KET6?: StringNullableFilter<"Personil"> | string | null
+    USUL?: StringNullableFilter<"Personil"> | string | null
+    FLR?: StringNullableFilter<"Personil"> | string | null
+    NOSKEP?: StringNullableFilter<"Personil"> | string | null
+    TGSKEP?: StringNullableFilter<"Personil"> | string | null
+    KEPPRES?: StringNullableFilter<"Personil"> | string | null
+    TGKEPP?: StringNullableFilter<"Personil"> | string | null
+    A?: StringNullableFilter<"Personil"> | string | null
+    BL?: StringNullableFilter<"Personil"> | string | null
+    TH?: StringNullableFilter<"Personil"> | string | null
+    KDM?: StringNullableFilter<"Personil"> | string | null
+    KEPPANG?: StringNullableFilter<"Personil"> | string | null
+    TGKEPPANG?: StringNullableFilter<"Personil"> | string | null
+    TGGAL?: StringNullableFilter<"Personil"> | string | null
+    BLGAL?: StringNullableFilter<"Personil"> | string | null
+    BLGAL1?: StringNullableFilter<"Personil"> | string | null
+    THGAL?: StringNullableFilter<"Personil"> | string | null
+    createdAt?: DateTimeFilter<"Personil"> | Date | string
+  }
+
+  export type PersonilOrderByWithRelationInput = {
+    id?: SortOrder
+    NAMA1?: SortOrderInput | SortOrder
+    NAMA2?: SortOrderInput | SortOrder
+    NAMA3?: SortOrderInput | SortOrder
+    KDPKT?: SortOrderInput | SortOrder
+    PANGKAT?: SortOrderInput | SortOrder
+    KORPS?: SortOrderInput | SortOrder
+    HAR?: SortOrderInput | SortOrder
+    NRP?: SortOrderInput | SortOrder
+    KELAHIRAN?: SortOrderInput | SortOrder
+    JAB1?: SortOrderInput | SortOrder
+    JAB2?: SortOrderInput | SortOrder
+    JAB3?: SortOrderInput | SortOrder
+    JAB4?: SortOrderInput | SortOrder
+    JAB5?: SortOrderInput | SortOrder
+    TMTTNI?: SortOrderInput | SortOrder
+    TGAB?: SortOrderInput | SortOrder
+    BLAB?: SortOrderInput | SortOrder
+    THAB?: SortOrderInput | SortOrder
+    KDSAH?: SortOrderInput | SortOrder
+    TMTMPP?: SortOrderInput | SortOrder
+    TGMPP?: SortOrderInput | SortOrder
+    BLMPP?: SortOrderInput | SortOrder
+    THMPP?: SortOrderInput | SortOrder
+    SDTG?: SortOrderInput | SortOrder
+    SDBL?: SortOrderInput | SortOrder
+    SDTH?: SortOrderInput | SortOrder
+    TMTHENTI?: SortOrderInput | SortOrder
+    TGHT?: SortOrderInput | SortOrder
+    BLHT?: SortOrderInput | SortOrder
+    THHT?: SortOrderInput | SortOrder
+    KET1?: SortOrderInput | SortOrder
+    KET2?: SortOrderInput | SortOrder
+    KET3?: SortOrderInput | SortOrder
+    KET4?: SortOrderInput | SortOrder
+    KET5?: SortOrderInput | SortOrder
+    KET6?: SortOrderInput | SortOrder
+    USUL?: SortOrderInput | SortOrder
+    FLR?: SortOrderInput | SortOrder
+    NOSKEP?: SortOrderInput | SortOrder
+    TGSKEP?: SortOrderInput | SortOrder
+    KEPPRES?: SortOrderInput | SortOrder
+    TGKEPP?: SortOrderInput | SortOrder
+    A?: SortOrderInput | SortOrder
+    BL?: SortOrderInput | SortOrder
+    TH?: SortOrderInput | SortOrder
+    KDM?: SortOrderInput | SortOrder
+    KEPPANG?: SortOrderInput | SortOrder
+    TGKEPPANG?: SortOrderInput | SortOrder
+    TGGAL?: SortOrderInput | SortOrder
+    BLGAL?: SortOrderInput | SortOrder
+    BLGAL1?: SortOrderInput | SortOrder
+    THGAL?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PersonilWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    AND?: PersonilWhereInput | PersonilWhereInput[]
+    OR?: PersonilWhereInput[]
+    NOT?: PersonilWhereInput | PersonilWhereInput[]
+    NAMA1?: StringNullableFilter<"Personil"> | string | null
+    NAMA2?: StringNullableFilter<"Personil"> | string | null
+    NAMA3?: StringNullableFilter<"Personil"> | string | null
+    KDPKT?: StringNullableFilter<"Personil"> | string | null
+    PANGKAT?: StringNullableFilter<"Personil"> | string | null
+    KORPS?: StringNullableFilter<"Personil"> | string | null
+    HAR?: StringNullableFilter<"Personil"> | string | null
+    NRP?: StringNullableFilter<"Personil"> | string | null
+    KELAHIRAN?: StringNullableFilter<"Personil"> | string | null
+    JAB1?: StringNullableFilter<"Personil"> | string | null
+    JAB2?: StringNullableFilter<"Personil"> | string | null
+    JAB3?: StringNullableFilter<"Personil"> | string | null
+    JAB4?: StringNullableFilter<"Personil"> | string | null
+    JAB5?: StringNullableFilter<"Personil"> | string | null
+    TMTTNI?: StringNullableFilter<"Personil"> | string | null
+    TGAB?: StringNullableFilter<"Personil"> | string | null
+    BLAB?: StringNullableFilter<"Personil"> | string | null
+    THAB?: StringNullableFilter<"Personil"> | string | null
+    KDSAH?: StringNullableFilter<"Personil"> | string | null
+    TMTMPP?: StringNullableFilter<"Personil"> | string | null
+    TGMPP?: StringNullableFilter<"Personil"> | string | null
+    BLMPP?: StringNullableFilter<"Personil"> | string | null
+    THMPP?: StringNullableFilter<"Personil"> | string | null
+    SDTG?: StringNullableFilter<"Personil"> | string | null
+    SDBL?: StringNullableFilter<"Personil"> | string | null
+    SDTH?: StringNullableFilter<"Personil"> | string | null
+    TMTHENTI?: StringNullableFilter<"Personil"> | string | null
+    TGHT?: StringNullableFilter<"Personil"> | string | null
+    BLHT?: StringNullableFilter<"Personil"> | string | null
+    THHT?: StringNullableFilter<"Personil"> | string | null
+    KET1?: StringNullableFilter<"Personil"> | string | null
+    KET2?: StringNullableFilter<"Personil"> | string | null
+    KET3?: StringNullableFilter<"Personil"> | string | null
+    KET4?: StringNullableFilter<"Personil"> | string | null
+    KET5?: StringNullableFilter<"Personil"> | string | null
+    KET6?: StringNullableFilter<"Personil"> | string | null
+    USUL?: StringNullableFilter<"Personil"> | string | null
+    FLR?: StringNullableFilter<"Personil"> | string | null
+    NOSKEP?: StringNullableFilter<"Personil"> | string | null
+    TGSKEP?: StringNullableFilter<"Personil"> | string | null
+    KEPPRES?: StringNullableFilter<"Personil"> | string | null
+    TGKEPP?: StringNullableFilter<"Personil"> | string | null
+    A?: StringNullableFilter<"Personil"> | string | null
+    BL?: StringNullableFilter<"Personil"> | string | null
+    TH?: StringNullableFilter<"Personil"> | string | null
+    KDM?: StringNullableFilter<"Personil"> | string | null
+    KEPPANG?: StringNullableFilter<"Personil"> | string | null
+    TGKEPPANG?: StringNullableFilter<"Personil"> | string | null
+    TGGAL?: StringNullableFilter<"Personil"> | string | null
+    BLGAL?: StringNullableFilter<"Personil"> | string | null
+    BLGAL1?: StringNullableFilter<"Personil"> | string | null
+    THGAL?: StringNullableFilter<"Personil"> | string | null
+    createdAt?: DateTimeFilter<"Personil"> | Date | string
+  }, "id">
+
+  export type PersonilOrderByWithAggregationInput = {
+    id?: SortOrder
+    NAMA1?: SortOrderInput | SortOrder
+    NAMA2?: SortOrderInput | SortOrder
+    NAMA3?: SortOrderInput | SortOrder
+    KDPKT?: SortOrderInput | SortOrder
+    PANGKAT?: SortOrderInput | SortOrder
+    KORPS?: SortOrderInput | SortOrder
+    HAR?: SortOrderInput | SortOrder
+    NRP?: SortOrderInput | SortOrder
+    KELAHIRAN?: SortOrderInput | SortOrder
+    JAB1?: SortOrderInput | SortOrder
+    JAB2?: SortOrderInput | SortOrder
+    JAB3?: SortOrderInput | SortOrder
+    JAB4?: SortOrderInput | SortOrder
+    JAB5?: SortOrderInput | SortOrder
+    TMTTNI?: SortOrderInput | SortOrder
+    TGAB?: SortOrderInput | SortOrder
+    BLAB?: SortOrderInput | SortOrder
+    THAB?: SortOrderInput | SortOrder
+    KDSAH?: SortOrderInput | SortOrder
+    TMTMPP?: SortOrderInput | SortOrder
+    TGMPP?: SortOrderInput | SortOrder
+    BLMPP?: SortOrderInput | SortOrder
+    THMPP?: SortOrderInput | SortOrder
+    SDTG?: SortOrderInput | SortOrder
+    SDBL?: SortOrderInput | SortOrder
+    SDTH?: SortOrderInput | SortOrder
+    TMTHENTI?: SortOrderInput | SortOrder
+    TGHT?: SortOrderInput | SortOrder
+    BLHT?: SortOrderInput | SortOrder
+    THHT?: SortOrderInput | SortOrder
+    KET1?: SortOrderInput | SortOrder
+    KET2?: SortOrderInput | SortOrder
+    KET3?: SortOrderInput | SortOrder
+    KET4?: SortOrderInput | SortOrder
+    KET5?: SortOrderInput | SortOrder
+    KET6?: SortOrderInput | SortOrder
+    USUL?: SortOrderInput | SortOrder
+    FLR?: SortOrderInput | SortOrder
+    NOSKEP?: SortOrderInput | SortOrder
+    TGSKEP?: SortOrderInput | SortOrder
+    KEPPRES?: SortOrderInput | SortOrder
+    TGKEPP?: SortOrderInput | SortOrder
+    A?: SortOrderInput | SortOrder
+    BL?: SortOrderInput | SortOrder
+    TH?: SortOrderInput | SortOrder
+    KDM?: SortOrderInput | SortOrder
+    KEPPANG?: SortOrderInput | SortOrder
+    TGKEPPANG?: SortOrderInput | SortOrder
+    TGGAL?: SortOrderInput | SortOrder
+    BLGAL?: SortOrderInput | SortOrder
+    BLGAL1?: SortOrderInput | SortOrder
+    THGAL?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: PersonilCountOrderByAggregateInput
+    _avg?: PersonilAvgOrderByAggregateInput
+    _max?: PersonilMaxOrderByAggregateInput
+    _min?: PersonilMinOrderByAggregateInput
+    _sum?: PersonilSumOrderByAggregateInput
+  }
+
+  export type PersonilScalarWhereWithAggregatesInput = {
+    AND?: PersonilScalarWhereWithAggregatesInput | PersonilScalarWhereWithAggregatesInput[]
+    OR?: PersonilScalarWhereWithAggregatesInput[]
+    NOT?: PersonilScalarWhereWithAggregatesInput | PersonilScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Personil"> | number
+    NAMA1?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    NAMA2?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    NAMA3?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KDPKT?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    PANGKAT?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KORPS?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    HAR?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    NRP?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KELAHIRAN?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    JAB1?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    JAB2?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    JAB3?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    JAB4?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    JAB5?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TMTTNI?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TGAB?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    BLAB?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    THAB?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KDSAH?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TMTMPP?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TGMPP?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    BLMPP?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    THMPP?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    SDTG?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    SDBL?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    SDTH?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TMTHENTI?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TGHT?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    BLHT?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    THHT?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KET1?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KET2?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KET3?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KET4?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KET5?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KET6?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    USUL?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    FLR?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    NOSKEP?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TGSKEP?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KEPPRES?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TGKEPP?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    A?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    BL?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TH?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KDM?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    KEPPANG?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TGKEPPANG?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    TGGAL?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    BLGAL?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    BLGAL1?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    THGAL?: StringNullableWithAggregatesFilter<"Personil"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Personil"> | Date | string
+  }
+
   export type UsersCreateInput = {
     name: string
     email: string
@@ -2237,6 +4353,402 @@ export namespace Prisma {
     role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
     otp?: NullableStringFieldUpdateOperationsInput | string | null
     otpExpires?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PersonilCreateInput = {
+    NAMA1?: string | null
+    NAMA2?: string | null
+    NAMA3?: string | null
+    KDPKT?: string | null
+    PANGKAT?: string | null
+    KORPS?: string | null
+    HAR?: string | null
+    NRP?: string | null
+    KELAHIRAN?: string | null
+    JAB1?: string | null
+    JAB2?: string | null
+    JAB3?: string | null
+    JAB4?: string | null
+    JAB5?: string | null
+    TMTTNI?: string | null
+    TGAB?: string | null
+    BLAB?: string | null
+    THAB?: string | null
+    KDSAH?: string | null
+    TMTMPP?: string | null
+    TGMPP?: string | null
+    BLMPP?: string | null
+    THMPP?: string | null
+    SDTG?: string | null
+    SDBL?: string | null
+    SDTH?: string | null
+    TMTHENTI?: string | null
+    TGHT?: string | null
+    BLHT?: string | null
+    THHT?: string | null
+    KET1?: string | null
+    KET2?: string | null
+    KET3?: string | null
+    KET4?: string | null
+    KET5?: string | null
+    KET6?: string | null
+    USUL?: string | null
+    FLR?: string | null
+    NOSKEP?: string | null
+    TGSKEP?: string | null
+    KEPPRES?: string | null
+    TGKEPP?: string | null
+    A?: string | null
+    BL?: string | null
+    TH?: string | null
+    KDM?: string | null
+    KEPPANG?: string | null
+    TGKEPPANG?: string | null
+    TGGAL?: string | null
+    BLGAL?: string | null
+    BLGAL1?: string | null
+    THGAL?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PersonilUncheckedCreateInput = {
+    id?: number
+    NAMA1?: string | null
+    NAMA2?: string | null
+    NAMA3?: string | null
+    KDPKT?: string | null
+    PANGKAT?: string | null
+    KORPS?: string | null
+    HAR?: string | null
+    NRP?: string | null
+    KELAHIRAN?: string | null
+    JAB1?: string | null
+    JAB2?: string | null
+    JAB3?: string | null
+    JAB4?: string | null
+    JAB5?: string | null
+    TMTTNI?: string | null
+    TGAB?: string | null
+    BLAB?: string | null
+    THAB?: string | null
+    KDSAH?: string | null
+    TMTMPP?: string | null
+    TGMPP?: string | null
+    BLMPP?: string | null
+    THMPP?: string | null
+    SDTG?: string | null
+    SDBL?: string | null
+    SDTH?: string | null
+    TMTHENTI?: string | null
+    TGHT?: string | null
+    BLHT?: string | null
+    THHT?: string | null
+    KET1?: string | null
+    KET2?: string | null
+    KET3?: string | null
+    KET4?: string | null
+    KET5?: string | null
+    KET6?: string | null
+    USUL?: string | null
+    FLR?: string | null
+    NOSKEP?: string | null
+    TGSKEP?: string | null
+    KEPPRES?: string | null
+    TGKEPP?: string | null
+    A?: string | null
+    BL?: string | null
+    TH?: string | null
+    KDM?: string | null
+    KEPPANG?: string | null
+    TGKEPPANG?: string | null
+    TGGAL?: string | null
+    BLGAL?: string | null
+    BLGAL1?: string | null
+    THGAL?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PersonilUpdateInput = {
+    NAMA1?: NullableStringFieldUpdateOperationsInput | string | null
+    NAMA2?: NullableStringFieldUpdateOperationsInput | string | null
+    NAMA3?: NullableStringFieldUpdateOperationsInput | string | null
+    KDPKT?: NullableStringFieldUpdateOperationsInput | string | null
+    PANGKAT?: NullableStringFieldUpdateOperationsInput | string | null
+    KORPS?: NullableStringFieldUpdateOperationsInput | string | null
+    HAR?: NullableStringFieldUpdateOperationsInput | string | null
+    NRP?: NullableStringFieldUpdateOperationsInput | string | null
+    KELAHIRAN?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB1?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB2?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB3?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB4?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB5?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTTNI?: NullableStringFieldUpdateOperationsInput | string | null
+    TGAB?: NullableStringFieldUpdateOperationsInput | string | null
+    BLAB?: NullableStringFieldUpdateOperationsInput | string | null
+    THAB?: NullableStringFieldUpdateOperationsInput | string | null
+    KDSAH?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    TGMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    BLMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    THMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    SDTG?: NullableStringFieldUpdateOperationsInput | string | null
+    SDBL?: NullableStringFieldUpdateOperationsInput | string | null
+    SDTH?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTHENTI?: NullableStringFieldUpdateOperationsInput | string | null
+    TGHT?: NullableStringFieldUpdateOperationsInput | string | null
+    BLHT?: NullableStringFieldUpdateOperationsInput | string | null
+    THHT?: NullableStringFieldUpdateOperationsInput | string | null
+    KET1?: NullableStringFieldUpdateOperationsInput | string | null
+    KET2?: NullableStringFieldUpdateOperationsInput | string | null
+    KET3?: NullableStringFieldUpdateOperationsInput | string | null
+    KET4?: NullableStringFieldUpdateOperationsInput | string | null
+    KET5?: NullableStringFieldUpdateOperationsInput | string | null
+    KET6?: NullableStringFieldUpdateOperationsInput | string | null
+    USUL?: NullableStringFieldUpdateOperationsInput | string | null
+    FLR?: NullableStringFieldUpdateOperationsInput | string | null
+    NOSKEP?: NullableStringFieldUpdateOperationsInput | string | null
+    TGSKEP?: NullableStringFieldUpdateOperationsInput | string | null
+    KEPPRES?: NullableStringFieldUpdateOperationsInput | string | null
+    TGKEPP?: NullableStringFieldUpdateOperationsInput | string | null
+    A?: NullableStringFieldUpdateOperationsInput | string | null
+    BL?: NullableStringFieldUpdateOperationsInput | string | null
+    TH?: NullableStringFieldUpdateOperationsInput | string | null
+    KDM?: NullableStringFieldUpdateOperationsInput | string | null
+    KEPPANG?: NullableStringFieldUpdateOperationsInput | string | null
+    TGKEPPANG?: NullableStringFieldUpdateOperationsInput | string | null
+    TGGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    BLGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    BLGAL1?: NullableStringFieldUpdateOperationsInput | string | null
+    THGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PersonilUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    NAMA1?: NullableStringFieldUpdateOperationsInput | string | null
+    NAMA2?: NullableStringFieldUpdateOperationsInput | string | null
+    NAMA3?: NullableStringFieldUpdateOperationsInput | string | null
+    KDPKT?: NullableStringFieldUpdateOperationsInput | string | null
+    PANGKAT?: NullableStringFieldUpdateOperationsInput | string | null
+    KORPS?: NullableStringFieldUpdateOperationsInput | string | null
+    HAR?: NullableStringFieldUpdateOperationsInput | string | null
+    NRP?: NullableStringFieldUpdateOperationsInput | string | null
+    KELAHIRAN?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB1?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB2?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB3?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB4?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB5?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTTNI?: NullableStringFieldUpdateOperationsInput | string | null
+    TGAB?: NullableStringFieldUpdateOperationsInput | string | null
+    BLAB?: NullableStringFieldUpdateOperationsInput | string | null
+    THAB?: NullableStringFieldUpdateOperationsInput | string | null
+    KDSAH?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    TGMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    BLMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    THMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    SDTG?: NullableStringFieldUpdateOperationsInput | string | null
+    SDBL?: NullableStringFieldUpdateOperationsInput | string | null
+    SDTH?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTHENTI?: NullableStringFieldUpdateOperationsInput | string | null
+    TGHT?: NullableStringFieldUpdateOperationsInput | string | null
+    BLHT?: NullableStringFieldUpdateOperationsInput | string | null
+    THHT?: NullableStringFieldUpdateOperationsInput | string | null
+    KET1?: NullableStringFieldUpdateOperationsInput | string | null
+    KET2?: NullableStringFieldUpdateOperationsInput | string | null
+    KET3?: NullableStringFieldUpdateOperationsInput | string | null
+    KET4?: NullableStringFieldUpdateOperationsInput | string | null
+    KET5?: NullableStringFieldUpdateOperationsInput | string | null
+    KET6?: NullableStringFieldUpdateOperationsInput | string | null
+    USUL?: NullableStringFieldUpdateOperationsInput | string | null
+    FLR?: NullableStringFieldUpdateOperationsInput | string | null
+    NOSKEP?: NullableStringFieldUpdateOperationsInput | string | null
+    TGSKEP?: NullableStringFieldUpdateOperationsInput | string | null
+    KEPPRES?: NullableStringFieldUpdateOperationsInput | string | null
+    TGKEPP?: NullableStringFieldUpdateOperationsInput | string | null
+    A?: NullableStringFieldUpdateOperationsInput | string | null
+    BL?: NullableStringFieldUpdateOperationsInput | string | null
+    TH?: NullableStringFieldUpdateOperationsInput | string | null
+    KDM?: NullableStringFieldUpdateOperationsInput | string | null
+    KEPPANG?: NullableStringFieldUpdateOperationsInput | string | null
+    TGKEPPANG?: NullableStringFieldUpdateOperationsInput | string | null
+    TGGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    BLGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    BLGAL1?: NullableStringFieldUpdateOperationsInput | string | null
+    THGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PersonilCreateManyInput = {
+    id?: number
+    NAMA1?: string | null
+    NAMA2?: string | null
+    NAMA3?: string | null
+    KDPKT?: string | null
+    PANGKAT?: string | null
+    KORPS?: string | null
+    HAR?: string | null
+    NRP?: string | null
+    KELAHIRAN?: string | null
+    JAB1?: string | null
+    JAB2?: string | null
+    JAB3?: string | null
+    JAB4?: string | null
+    JAB5?: string | null
+    TMTTNI?: string | null
+    TGAB?: string | null
+    BLAB?: string | null
+    THAB?: string | null
+    KDSAH?: string | null
+    TMTMPP?: string | null
+    TGMPP?: string | null
+    BLMPP?: string | null
+    THMPP?: string | null
+    SDTG?: string | null
+    SDBL?: string | null
+    SDTH?: string | null
+    TMTHENTI?: string | null
+    TGHT?: string | null
+    BLHT?: string | null
+    THHT?: string | null
+    KET1?: string | null
+    KET2?: string | null
+    KET3?: string | null
+    KET4?: string | null
+    KET5?: string | null
+    KET6?: string | null
+    USUL?: string | null
+    FLR?: string | null
+    NOSKEP?: string | null
+    TGSKEP?: string | null
+    KEPPRES?: string | null
+    TGKEPP?: string | null
+    A?: string | null
+    BL?: string | null
+    TH?: string | null
+    KDM?: string | null
+    KEPPANG?: string | null
+    TGKEPPANG?: string | null
+    TGGAL?: string | null
+    BLGAL?: string | null
+    BLGAL1?: string | null
+    THGAL?: string | null
+    createdAt?: Date | string
+  }
+
+  export type PersonilUpdateManyMutationInput = {
+    NAMA1?: NullableStringFieldUpdateOperationsInput | string | null
+    NAMA2?: NullableStringFieldUpdateOperationsInput | string | null
+    NAMA3?: NullableStringFieldUpdateOperationsInput | string | null
+    KDPKT?: NullableStringFieldUpdateOperationsInput | string | null
+    PANGKAT?: NullableStringFieldUpdateOperationsInput | string | null
+    KORPS?: NullableStringFieldUpdateOperationsInput | string | null
+    HAR?: NullableStringFieldUpdateOperationsInput | string | null
+    NRP?: NullableStringFieldUpdateOperationsInput | string | null
+    KELAHIRAN?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB1?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB2?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB3?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB4?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB5?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTTNI?: NullableStringFieldUpdateOperationsInput | string | null
+    TGAB?: NullableStringFieldUpdateOperationsInput | string | null
+    BLAB?: NullableStringFieldUpdateOperationsInput | string | null
+    THAB?: NullableStringFieldUpdateOperationsInput | string | null
+    KDSAH?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    TGMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    BLMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    THMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    SDTG?: NullableStringFieldUpdateOperationsInput | string | null
+    SDBL?: NullableStringFieldUpdateOperationsInput | string | null
+    SDTH?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTHENTI?: NullableStringFieldUpdateOperationsInput | string | null
+    TGHT?: NullableStringFieldUpdateOperationsInput | string | null
+    BLHT?: NullableStringFieldUpdateOperationsInput | string | null
+    THHT?: NullableStringFieldUpdateOperationsInput | string | null
+    KET1?: NullableStringFieldUpdateOperationsInput | string | null
+    KET2?: NullableStringFieldUpdateOperationsInput | string | null
+    KET3?: NullableStringFieldUpdateOperationsInput | string | null
+    KET4?: NullableStringFieldUpdateOperationsInput | string | null
+    KET5?: NullableStringFieldUpdateOperationsInput | string | null
+    KET6?: NullableStringFieldUpdateOperationsInput | string | null
+    USUL?: NullableStringFieldUpdateOperationsInput | string | null
+    FLR?: NullableStringFieldUpdateOperationsInput | string | null
+    NOSKEP?: NullableStringFieldUpdateOperationsInput | string | null
+    TGSKEP?: NullableStringFieldUpdateOperationsInput | string | null
+    KEPPRES?: NullableStringFieldUpdateOperationsInput | string | null
+    TGKEPP?: NullableStringFieldUpdateOperationsInput | string | null
+    A?: NullableStringFieldUpdateOperationsInput | string | null
+    BL?: NullableStringFieldUpdateOperationsInput | string | null
+    TH?: NullableStringFieldUpdateOperationsInput | string | null
+    KDM?: NullableStringFieldUpdateOperationsInput | string | null
+    KEPPANG?: NullableStringFieldUpdateOperationsInput | string | null
+    TGKEPPANG?: NullableStringFieldUpdateOperationsInput | string | null
+    TGGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    BLGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    BLGAL1?: NullableStringFieldUpdateOperationsInput | string | null
+    THGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type PersonilUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    NAMA1?: NullableStringFieldUpdateOperationsInput | string | null
+    NAMA2?: NullableStringFieldUpdateOperationsInput | string | null
+    NAMA3?: NullableStringFieldUpdateOperationsInput | string | null
+    KDPKT?: NullableStringFieldUpdateOperationsInput | string | null
+    PANGKAT?: NullableStringFieldUpdateOperationsInput | string | null
+    KORPS?: NullableStringFieldUpdateOperationsInput | string | null
+    HAR?: NullableStringFieldUpdateOperationsInput | string | null
+    NRP?: NullableStringFieldUpdateOperationsInput | string | null
+    KELAHIRAN?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB1?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB2?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB3?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB4?: NullableStringFieldUpdateOperationsInput | string | null
+    JAB5?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTTNI?: NullableStringFieldUpdateOperationsInput | string | null
+    TGAB?: NullableStringFieldUpdateOperationsInput | string | null
+    BLAB?: NullableStringFieldUpdateOperationsInput | string | null
+    THAB?: NullableStringFieldUpdateOperationsInput | string | null
+    KDSAH?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    TGMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    BLMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    THMPP?: NullableStringFieldUpdateOperationsInput | string | null
+    SDTG?: NullableStringFieldUpdateOperationsInput | string | null
+    SDBL?: NullableStringFieldUpdateOperationsInput | string | null
+    SDTH?: NullableStringFieldUpdateOperationsInput | string | null
+    TMTHENTI?: NullableStringFieldUpdateOperationsInput | string | null
+    TGHT?: NullableStringFieldUpdateOperationsInput | string | null
+    BLHT?: NullableStringFieldUpdateOperationsInput | string | null
+    THHT?: NullableStringFieldUpdateOperationsInput | string | null
+    KET1?: NullableStringFieldUpdateOperationsInput | string | null
+    KET2?: NullableStringFieldUpdateOperationsInput | string | null
+    KET3?: NullableStringFieldUpdateOperationsInput | string | null
+    KET4?: NullableStringFieldUpdateOperationsInput | string | null
+    KET5?: NullableStringFieldUpdateOperationsInput | string | null
+    KET6?: NullableStringFieldUpdateOperationsInput | string | null
+    USUL?: NullableStringFieldUpdateOperationsInput | string | null
+    FLR?: NullableStringFieldUpdateOperationsInput | string | null
+    NOSKEP?: NullableStringFieldUpdateOperationsInput | string | null
+    TGSKEP?: NullableStringFieldUpdateOperationsInput | string | null
+    KEPPRES?: NullableStringFieldUpdateOperationsInput | string | null
+    TGKEPP?: NullableStringFieldUpdateOperationsInput | string | null
+    A?: NullableStringFieldUpdateOperationsInput | string | null
+    BL?: NullableStringFieldUpdateOperationsInput | string | null
+    TH?: NullableStringFieldUpdateOperationsInput | string | null
+    KDM?: NullableStringFieldUpdateOperationsInput | string | null
+    KEPPANG?: NullableStringFieldUpdateOperationsInput | string | null
+    TGKEPPANG?: NullableStringFieldUpdateOperationsInput | string | null
+    TGGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    BLGAL?: NullableStringFieldUpdateOperationsInput | string | null
+    BLGAL1?: NullableStringFieldUpdateOperationsInput | string | null
+    THGAL?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -2444,6 +4956,185 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedDateTimeFilter<$PrismaModel>
     _max?: NestedDateTimeFilter<$PrismaModel>
+  }
+
+  export type PersonilCountOrderByAggregateInput = {
+    id?: SortOrder
+    NAMA1?: SortOrder
+    NAMA2?: SortOrder
+    NAMA3?: SortOrder
+    KDPKT?: SortOrder
+    PANGKAT?: SortOrder
+    KORPS?: SortOrder
+    HAR?: SortOrder
+    NRP?: SortOrder
+    KELAHIRAN?: SortOrder
+    JAB1?: SortOrder
+    JAB2?: SortOrder
+    JAB3?: SortOrder
+    JAB4?: SortOrder
+    JAB5?: SortOrder
+    TMTTNI?: SortOrder
+    TGAB?: SortOrder
+    BLAB?: SortOrder
+    THAB?: SortOrder
+    KDSAH?: SortOrder
+    TMTMPP?: SortOrder
+    TGMPP?: SortOrder
+    BLMPP?: SortOrder
+    THMPP?: SortOrder
+    SDTG?: SortOrder
+    SDBL?: SortOrder
+    SDTH?: SortOrder
+    TMTHENTI?: SortOrder
+    TGHT?: SortOrder
+    BLHT?: SortOrder
+    THHT?: SortOrder
+    KET1?: SortOrder
+    KET2?: SortOrder
+    KET3?: SortOrder
+    KET4?: SortOrder
+    KET5?: SortOrder
+    KET6?: SortOrder
+    USUL?: SortOrder
+    FLR?: SortOrder
+    NOSKEP?: SortOrder
+    TGSKEP?: SortOrder
+    KEPPRES?: SortOrder
+    TGKEPP?: SortOrder
+    A?: SortOrder
+    BL?: SortOrder
+    TH?: SortOrder
+    KDM?: SortOrder
+    KEPPANG?: SortOrder
+    TGKEPPANG?: SortOrder
+    TGGAL?: SortOrder
+    BLGAL?: SortOrder
+    BLGAL1?: SortOrder
+    THGAL?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PersonilAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type PersonilMaxOrderByAggregateInput = {
+    id?: SortOrder
+    NAMA1?: SortOrder
+    NAMA2?: SortOrder
+    NAMA3?: SortOrder
+    KDPKT?: SortOrder
+    PANGKAT?: SortOrder
+    KORPS?: SortOrder
+    HAR?: SortOrder
+    NRP?: SortOrder
+    KELAHIRAN?: SortOrder
+    JAB1?: SortOrder
+    JAB2?: SortOrder
+    JAB3?: SortOrder
+    JAB4?: SortOrder
+    JAB5?: SortOrder
+    TMTTNI?: SortOrder
+    TGAB?: SortOrder
+    BLAB?: SortOrder
+    THAB?: SortOrder
+    KDSAH?: SortOrder
+    TMTMPP?: SortOrder
+    TGMPP?: SortOrder
+    BLMPP?: SortOrder
+    THMPP?: SortOrder
+    SDTG?: SortOrder
+    SDBL?: SortOrder
+    SDTH?: SortOrder
+    TMTHENTI?: SortOrder
+    TGHT?: SortOrder
+    BLHT?: SortOrder
+    THHT?: SortOrder
+    KET1?: SortOrder
+    KET2?: SortOrder
+    KET3?: SortOrder
+    KET4?: SortOrder
+    KET5?: SortOrder
+    KET6?: SortOrder
+    USUL?: SortOrder
+    FLR?: SortOrder
+    NOSKEP?: SortOrder
+    TGSKEP?: SortOrder
+    KEPPRES?: SortOrder
+    TGKEPP?: SortOrder
+    A?: SortOrder
+    BL?: SortOrder
+    TH?: SortOrder
+    KDM?: SortOrder
+    KEPPANG?: SortOrder
+    TGKEPPANG?: SortOrder
+    TGGAL?: SortOrder
+    BLGAL?: SortOrder
+    BLGAL1?: SortOrder
+    THGAL?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PersonilMinOrderByAggregateInput = {
+    id?: SortOrder
+    NAMA1?: SortOrder
+    NAMA2?: SortOrder
+    NAMA3?: SortOrder
+    KDPKT?: SortOrder
+    PANGKAT?: SortOrder
+    KORPS?: SortOrder
+    HAR?: SortOrder
+    NRP?: SortOrder
+    KELAHIRAN?: SortOrder
+    JAB1?: SortOrder
+    JAB2?: SortOrder
+    JAB3?: SortOrder
+    JAB4?: SortOrder
+    JAB5?: SortOrder
+    TMTTNI?: SortOrder
+    TGAB?: SortOrder
+    BLAB?: SortOrder
+    THAB?: SortOrder
+    KDSAH?: SortOrder
+    TMTMPP?: SortOrder
+    TGMPP?: SortOrder
+    BLMPP?: SortOrder
+    THMPP?: SortOrder
+    SDTG?: SortOrder
+    SDBL?: SortOrder
+    SDTH?: SortOrder
+    TMTHENTI?: SortOrder
+    TGHT?: SortOrder
+    BLHT?: SortOrder
+    THHT?: SortOrder
+    KET1?: SortOrder
+    KET2?: SortOrder
+    KET3?: SortOrder
+    KET4?: SortOrder
+    KET5?: SortOrder
+    KET6?: SortOrder
+    USUL?: SortOrder
+    FLR?: SortOrder
+    NOSKEP?: SortOrder
+    TGSKEP?: SortOrder
+    KEPPRES?: SortOrder
+    TGKEPP?: SortOrder
+    A?: SortOrder
+    BL?: SortOrder
+    TH?: SortOrder
+    KDM?: SortOrder
+    KEPPANG?: SortOrder
+    TGKEPPANG?: SortOrder
+    TGGAL?: SortOrder
+    BLGAL?: SortOrder
+    BLGAL1?: SortOrder
+    THGAL?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type PersonilSumOrderByAggregateInput = {
+    id?: SortOrder
   }
 
   export type StringFieldUpdateOperationsInput = {
