@@ -10,40 +10,28 @@ import bcrypt from "bcrypt";
  *     description: Mendaftar user baru dengan nama, email, dan password
  *     tags:
  *       - Users
- *     parameters:
- *       - name: name
- *         in: query
- *         required: true
- *         schema:
- *           type: string
- *         example: Dimas Faiz
- *       - name: email
- *         in: query
- *         required: true
- *         schema:
- *           type: string
- *         example: dimasfaiz@gmail.com
- *       - name: password
- *         in: query
- *         required: true
- *         schema:
- *           type: string
- *         example: passwordrahasia
- *       - name: role
- *         in: query
- *         required: false
- *         schema:
- *           type: string
- *         enum:
- *           - admin
- *           - user
- *         example: admin
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *               $ref: '#/components/schemas/Users'
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Dimas Faiz"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "dimasfaiz@gmail.com"
+ *               password:
+ *                 type: string
+ *                 example: "passwordrahasia"
+ *               Role:
+ *                 type: string
+ *                 enum: [admin, user]
+ *                 example: "user"
+ *             required: [name, email, password]
  *     responses:
  *       201:
  *         description: User berhasil didaftarkan
