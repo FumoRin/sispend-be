@@ -2,9 +2,18 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
+import { authUser } from "@/middleware/verifyToken";
 
 export async function POST(request) {
   try {
+    // ===== Cek user =====
+    const authCheck = await authUser(request);
+    if (authCheck.status !== 200) {
+      return NextResponse.json(authCheck.body, { status: authCheck.status });
+    }
+    const userId = authCheck.user.id;
+
+    // ===== Ambil file =====
     const formData = await request.formData();
     const file = formData.get("file");
 
@@ -43,17 +52,27 @@ export async function POST(request) {
       );
     }
 
-    // Fungsi normalisasi: semua dikonversi ke string atau null
-    const normalizeValue = (val) => {
-      if (val === undefined || val === null) return null;
-      return String(val).trim();
-    };
+    // ===== Normalisasi =====
+    const normalizeValue = (val) => (val === undefined || val === null ? null : String(val).trim());
 
-    const chunkSize = 200; // bisa sesuaikan
+    // Ambil semua NRP yang sudah ada di database
+    const existingNRP = new Set(
+      (await prisma.personil.findMany({ select: { NRP: true } }))
+        .map(p => p.NRP)
+        .filter(nrp => nrp) // hilangkan null
+    );
+
+    // Filter data baru untuk NRP yang belum ada
+    const filteredData = rawData.filter(row => {
+      const nrp = normalizeValue(row.NRP);
+      return nrp && !existingNRP.has(nrp);
+    });
+
+    const chunkSize = 200;
     let insertedCount = 0;
 
-    for (let i = 0; i < rawData.length; i += chunkSize) {
-      const chunk = rawData.slice(i, i + chunkSize).map(row => ({
+    for (let i = 0; i < filteredData.length; i += chunkSize) {
+      const chunk = filteredData.slice(i, i + chunkSize).map(row => ({
         NAMA1: normalizeValue(row.NAMA1),
         NAMA2: normalizeValue(row.NAMA2),
         NAMA3: normalizeValue(row.NAMA3),
@@ -110,10 +129,20 @@ export async function POST(request) {
 
       const result = await prisma.personil.createMany({
         data: chunk,
-        skipDuplicates: true,
+        skipDuplicates: true, // backup jika ada NRP duplikat di chunk
       });
       insertedCount += result.count;
     }
+
+    // ===== Tambahkan History =====
+    await prisma.history.create({
+      data: {
+        userId,
+        personilId: null,
+        action: `Melakukan import dengan total ${insertedCount} data`,
+        detail: null,
+      },
+    });
 
     return NextResponse.json({
       success: true,
@@ -121,7 +150,6 @@ export async function POST(request) {
       importedCount: insertedCount,
       skippedCount: rawData.length - insertedCount,
     });
-
   } catch (error) {
     console.error("Import Error:", error);
     return NextResponse.json(
