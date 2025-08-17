@@ -9,7 +9,10 @@ export async function POST(request) {
     const file = formData.get("file");
 
     if (!file) {
-      return NextResponse.json({ error: "File tidak ditemukan" }, { status: 400 });
+      return NextResponse.json(
+        { error: "File tidak ditemukan" },
+        { status: 400 }
+      );
     }
 
     let rawData = [];
@@ -48,15 +51,27 @@ export async function POST(request) {
       return String(val).trim();
     };
 
+    const parseDate = (val) => {
+      if (!val) return null;
+      const date = new Date(val);
+      return isNaN(date) ? null : date;
+    };
+
+    const parseIntValue = (val) => {
+      if (val === undefined || val === null || val === "") return null;
+      const n = parseInt(val, 10); // basis 10
+      return isNaN(n) ? null : n;
+    };
+
     // Ambil semua NRP yang sudah ada di DB
     const existingNRPs = await prisma.personil.findMany({
-      select: { NRP: true }
+      select: { NRP: true },
     });
-    const existingNRPSet = new Set(existingNRPs.map(item => item.NRP));
+    const existingNRPSet = new Set(existingNRPs.map((item) => item.NRP));
 
     // Filter hanya data baru
     const newData = rawData
-      .map(row => ({
+      .map((row) => ({
         NAMA1: normalizeValue(row.NAMA1),
         NAMA2: normalizeValue(row.NAMA2),
         NAMA3: normalizeValue(row.NAMA3),
@@ -64,8 +79,8 @@ export async function POST(request) {
         PANGKAT: normalizeValue(row.PANGKAT),
         KORPS: normalizeValue(row.KORPS),
         HAR: normalizeValue(row.HAR),
-        NRP: normalizeValue(row.NRP),
-        KELAHIRAN: normalizeValue(row.KELAHIRAN),
+        NRP: parseIntValue(row.NRP),
+        KELAHIRAN: parseDate(row.KELAHIRAN),
         JAB1: normalizeValue(row.JAB1),
         JAB2: normalizeValue(row.JAB2),
         JAB3: normalizeValue(row.JAB3),
@@ -104,13 +119,13 @@ export async function POST(request) {
         TH: normalizeValue(row.TH),
         KDM: normalizeValue(row.KDM),
         KEPPANG: normalizeValue(row.KEPPANG),
-        TGKEPPANG: normalizeValue(row.TGKEPPANG),
+        TGKEPPANG: parseDate(row.TGKEPPANG),
         TGGAL: normalizeValue(row.TGGAL),
         BLGAL: normalizeValue(row.BLGAL),
         BLGAL1: normalizeValue(row.BLGAL1),
         THGAL: normalizeValue(row.THGAL),
       }))
-      .filter(row => row.NRP && !existingNRPSet.has(row.NRP));
+      .filter((row) => row.NRP && !existingNRPSet.has(row.NRP));
 
     if (newData.length === 0) {
       return NextResponse.json(
@@ -131,7 +146,6 @@ export async function POST(request) {
       importedCount: result.count,
       skippedCount: rawData.length - result.count,
     });
-
   } catch (error) {
     console.error("Import Error:", error);
     return NextResponse.json(
