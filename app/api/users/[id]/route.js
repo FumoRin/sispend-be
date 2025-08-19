@@ -2,11 +2,362 @@ import prisma from "@/lib/prisma";
 import { authUser, verifyOtpToken } from "@/middleware/verifyToken";
 import bcrypt from "bcrypt";
 
+/**
+ * @swagger
+ * /api/users/{id}:
+ *   get:
+ *     tags:
+ *       - Users
+ *     summary: Mengambil data user berdasarkan ID
+ *     description: Mengambil data user berdasarkan ID
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID user
+ *         schema:
+ *           type: integer
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Data user terambil
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: "Dimas Faiz"
+ *                 email:
+ *                   type: string
+ *                   example: "dimasfaiz@gmail.com"
+ *                 role:
+ *                   type: string
+ *                   example: "ADMIN"
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2023-06-01T10:00:00.000Z"
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Invalid user ID"
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "User not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Internal Server Error"
+ *   put:
+ *     tags:
+ *       - Users
+ *     summary: Mengubah data user berdasarkan ID
+ *     description: |
+ *       Mengubah data user berdasarkan ID.
+ *
+ *       **Catatan Penting:**
+ *       - Admin dapat mengubah user mana saja tanpa OTP
+ *       - Non-admin harus menyertakan `otpVerifiedToken` di header untuk mengubah data
+ *       - Hanya admin yang dapat mengubah role user
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID user
+ *         schema:
+ *           type: integer
+ *       - name: otpVerifiedToken
+ *         in: header
+ *         required: false
+ *         description: |
+ *           Token verifikasi OTP (wajib untuk user non-Admin).
+ *           Dapatkan token ini dari endpoint /api/otp/check setelah verifikasi OTP.
+ *           Format: Bearer <otp-jwt-token>
+ *         schema:
+ *           type: string
+ *           example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nama user baru
+ *                 example: "Dimas Faiz Updated"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 description: Email user baru
+ *                 example: "dimasfaiz.updated@gmail.com"
+ *               password:
+ *                 type: string
+ *                 description: Password baru user
+ *                 minLength: 6
+ *                 example: "passwordbaru123"
+ *               role:
+ *                 type: string
+ *                 enum: [ADMIN, USER]
+ *                 description: Role user (hanya admin yang dapat mengubah ini)
+ *                 example: "USER"
+ *             minProperties: 1
+ *           examples:
+ *             update_basic_info:
+ *               summary: Update basic information
+ *               value:
+ *                 name: "John Doe Updated"
+ *                 email: "john.updated@example.com"
+ *             update_password:
+ *               summary: Update password only
+ *               value:
+ *                 password: "newpassword123"
+ *             admin_update_role:
+ *               summary: Admin updating user role
+ *               value:
+ *                 name: "Jane Admin"
+ *                 role: "ADMIN"
+ *     responses:
+ *       200:
+ *         description: Data user berhasil diubah
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
+ *                   type: string
+ *                   example: "Dimas Faiz Updated"
+ *                 email:
+ *                   type: string
+ *                   example: "dimasfaiz.updated@gmail.com"
+ *                 role:
+ *                   type: string
+ *                   example: "USER"
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2023-06-01T10:00:00.000Z"
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             examples:
+ *               invalid_id:
+ *                 summary: Invalid user ID
+ *                 value:
+ *                   error: "Invalid user ID"
+ *               no_fields:
+ *                 summary: No fields provided
+ *                 value:
+ *                   error: "At least one field must be provided for update"
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             examples:
+ *               no_token:
+ *                 summary: Missing authorization token
+ *                 value:
+ *                   error: "Unauthorized - Token missing or invalid"
+ *               invalid_otp_token:
+ *                 summary: Invalid OTP token for non-admin
+ *                 value:
+ *                   error: "Invalid or expired OTP token"
+ *               missing_otp_token:
+ *                 summary: Missing OTP token for non-admin
+ *                 value:
+ *                   error: "OTP verification token missing"
+ *       403:
+ *         description: Forbidden
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Only admins can change user roles"
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "User not found"
+ *       409:
+ *         description: Conflict
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Email already exists"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Internal Server Error"
+ *   delete:
+ *     tags:
+ *       - Users
+ *     summary: Menghapus data user berdasarkan ID
+ *     description: |
+ *       Menghapus data user berdasarkan ID.
+ *
+ *       **Catatan Penting:**
+ *       - Admin dapat menghapus user mana saja tanpa OTP
+ *       - Non-admin harus menyertakan `otpVerifiedToken` di header untuk menghapus data
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID user yang akan dihapus
+ *         schema:
+ *           type: integer
+ *       - name: otpVerifiedToken
+ *         in: header
+ *         required: false
+ *         description: |
+ *           Token verifikasi OTP (wajib untuk user non-Admin).
+ *           Dapatkan token ini dari endpoint /api/otp/check setelah verifikasi OTP.
+ *           Format: Bearer <otp-jwt-token>
+ *         schema:
+ *           type: string
+ *           example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *     security:
+ *       - BearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Data user berhasil dihapus
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User deleted successfully"
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Invalid user ID"
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             examples:
+ *               no_token:
+ *                 summary: Missing authorization token
+ *                 value:
+ *                   error: "Unauthorized - Token missing or invalid"
+ *               invalid_otp_token:
+ *                 summary: Invalid OTP token for non-admin
+ *                 value:
+ *                   error: "Invalid or expired OTP token"
+ *               missing_otp_token:
+ *                 summary: Missing OTP token for non-admin
+ *                 value:
+ *                   error: "OTP verification token missing"
+ *       404:
+ *         description: Not Found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "User not found"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Internal Server Error"
+ */
+
 export async function GET(request, { params }) {
   try {
-    const { id } =await params;
+    const { id } = await params;
     const userId = parseInt(id);
-    
+
     if (isNaN(userId)) {
       return Response.json({ error: "Invalid user ID" }, { status: 400 });
     }
@@ -18,8 +369,8 @@ export async function GET(request, { params }) {
         name: true,
         email: true,
         role: true,
-        createdAt: true
-      }
+        createdAt: true,
+      },
     });
 
     if (!user) {
@@ -44,9 +395,9 @@ export async function PUT(request, { params }) {
     }
 
     const currentUser = authCheck.user;
-    const { id } =await params;
+    const { id } = await params;
     const userId = parseInt(id);
-    
+
     if (isNaN(userId)) {
       return Response.json({ error: "Invalid user ID" }, { status: 400 });
     }
@@ -61,7 +412,7 @@ export async function PUT(request, { params }) {
     }
 
     const isAdmin = currentUser.role === "ADMIN";
-    
+
     if (role && !isAdmin) {
       return Response.json(
         { error: "Only admins can change user roles" },
@@ -102,14 +453,11 @@ export async function PUT(request, { params }) {
     return Response.json(updatedUser, { status: 200 });
   } catch (error) {
     console.error("PUT User Error:", error);
-    
+
     if (error.code === "P2002") {
-      return Response.json(
-        { error: "Email already exists" },
-        { status: 409 }
-      );
+      return Response.json({ error: "Email already exists" }, { status: 409 });
     }
-    
+
     return Response.json(
       { error: error.message || "Internal Server Error" },
       { status: 500 }
@@ -125,7 +473,7 @@ export async function DELETE(request, { params }) {
     }
 
     const currentUser = authCheck.user;
-    const { id } = params;
+    const { id } = await params;
     const userId = parseInt(id);
 
     if (isNaN(userId)) {
@@ -133,7 +481,8 @@ export async function DELETE(request, { params }) {
     }
 
     if (currentUser.role !== "ADMIN") {
-      const otpVerification = await verifyOtpToken(request);
+      const otpVerification = verifyOtpToken(request);
+
       if (otpVerification.error) {
         return Response.json(
           { error: otpVerification.error },
@@ -162,10 +511,7 @@ export async function DELETE(request, { params }) {
     console.error("DELETE User Error:", error);
 
     if (error.code === "P2025") {
-      return Response.json(
-        { error: "User not found" },
-        { status: 404 }
-      );
+      return Response.json({ error: "User not found" }, { status: 404 });
     }
 
     return Response.json(
