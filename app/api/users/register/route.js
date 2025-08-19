@@ -29,8 +29,8 @@ import bcrypt from "bcrypt";
  *                 example: "passwordrahasia"
  *               Role:
  *                 type: string
- *                 enum: [admin, user]
- *                 example: "user"
+ *                 enum: [ADMIN, USER]
+ *                 example: "USER"
  *             required: [name, email, password]
  *     responses:
  *       201:

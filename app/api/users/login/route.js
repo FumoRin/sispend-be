@@ -9,7 +9,11 @@ import bcrypt from "bcrypt";
  *     tags:
  *       - Users
  *     summary: Login user
- *     description: Masuk menggunakan user yang telah terdaftar
+ *     description: |
+ *        Masuk menggunakan user yang telah terdaftar
+ *
+ *        **Catatan Penting**
+ *        - Identifier bisa menggunakan username maupun password
  *     requestBody:
  *       required: true
  *       content:

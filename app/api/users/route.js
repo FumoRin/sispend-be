@@ -24,16 +24,14 @@ import prisma from "@/lib/prisma";
  *                     type: string
  *                   role:
  *                     type: string
- *                     enum:
- *                       - admin
- *                       - user
+ *                     enum: [ADMIN, USER]
  *             example:
  *               - name: Dimas Faiz
  *                 email: dimasfaiz@gmailcom
- *                 role: admin
+ *                 role: ADMIN
  *               - name: Muhammad Syarif
  *                 email: syarif@gmailcom
- *                 role: user
+ *                 role: USER
  *
  */
 
