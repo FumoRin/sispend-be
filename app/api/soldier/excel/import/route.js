@@ -2,9 +2,18 @@ import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import Papa from "papaparse";
 import * as XLSX from "xlsx";
+import { authUser } from "@/middleware/verifyToken";
 
 export async function POST(request) {
   try {
+    // ===== Cek user =====
+    const authCheck = await authUser(request);
+    if (authCheck.status !== 200) {
+      return NextResponse.json(authCheck.body, { status: authCheck.status });
+    }
+    const userId = authCheck.user.id;
+
+    // ===== Ambil file =====
     const formData = await request.formData();
     const file = formData.get("file");
 
@@ -46,10 +55,9 @@ export async function POST(request) {
       );
     }
 
-    const normalizeValue = (val) => {
-      if (val === undefined || val === null) return null;
-      return String(val).trim();
-    };
+    // ===== Helper =====
+    const normalizeValue = (val) =>
+      val === undefined || val === null ? null : String(val).trim();
 
     const parseDate = (val) => {
       if (!val) return null;
@@ -59,92 +67,113 @@ export async function POST(request) {
 
     const parseIntValue = (val) => {
       if (val === undefined || val === null || val === "") return null;
-      const n = parseInt(val, 10); // basis 10
+      const n = parseInt(val, 10);
       return isNaN(n) ? null : n;
     };
 
-    // Ambil semua NRP yang sudah ada di DB
+    // ===== Ambil NRP existing =====
     const existingNRPs = await prisma.personil.findMany({
       select: { NRP: true },
     });
-    const existingNRPSet = new Set(existingNRPs.map((item) => item.NRP));
+    const existingNRPSet = new Set(
+      existingNRPs.map((item) => item.NRP).filter((nrp) => nrp)
+    );
 
-    // Filter hanya data baru
-    const newData = rawData
-      .map((row) => ({
-        NAMA1: normalizeValue(row.NAMA1),
-        NAMA2: normalizeValue(row.NAMA2),
-        NAMA3: normalizeValue(row.NAMA3),
-        KDPKT: normalizeValue(row.KDPKT),
-        PANGKAT: normalizeValue(row.PANGKAT),
-        KORPS: normalizeValue(row.KORPS),
-        HAR: normalizeValue(row.HAR),
-        NRP: parseIntValue(row.NRP),
-        KELAHIRAN: parseDate(row.KELAHIRAN),
-        JAB1: normalizeValue(row.JAB1),
-        JAB2: normalizeValue(row.JAB2),
-        JAB3: normalizeValue(row.JAB3),
-        JAB4: normalizeValue(row.JAB4),
-        JAB5: normalizeValue(row.JAB5),
-        TMTTNI: normalizeValue(row.TMTTNI),
-        TGAB: normalizeValue(row.TGAB),
-        BLAB: normalizeValue(row.BLAB),
-        THAB: normalizeValue(row.THAB),
-        KDSAH: normalizeValue(row.KDSAH),
-        TMTMPP: normalizeValue(row.TMTMPP),
-        TGMPP: normalizeValue(row.TGMPP),
-        BLMPP: normalizeValue(row.BLMPP),
-        THMPP: normalizeValue(row.THMPP),
-        SDTG: normalizeValue(row.SDTG),
-        SDBL: normalizeValue(row.SDBL),
-        SDTH: normalizeValue(row.SDTH),
-        TMTHENTI: normalizeValue(row.TMTHENTI),
-        TGHT: normalizeValue(row.TGHT),
-        BLHT: normalizeValue(row.BLHT),
-        THHT: normalizeValue(row.THHT),
-        KET1: normalizeValue(row.KET1),
-        KET2: normalizeValue(row.KET2),
-        KET3: normalizeValue(row.KET3),
-        KET4: normalizeValue(row.KET4),
-        KET5: normalizeValue(row.KET5),
-        KET6: normalizeValue(row.KET6),
-        USUL: normalizeValue(row.USUL),
-        FLR: normalizeValue(row.FLR),
-        NOSKEP: normalizeValue(row.NOSKEP),
-        TGSKEP: normalizeValue(row.TGSKEP),
-        KEPPRES: normalizeValue(row.KEPPRES),
-        TGKEPP: normalizeValue(row.TGKEPP),
-        A: normalizeValue(row.A),
-        BL: normalizeValue(row.BL),
-        TH: normalizeValue(row.TH),
-        KDM: normalizeValue(row.KDM),
-        KEPPANG: normalizeValue(row.KEPPANG),
-        TGKEPPANG: parseDate(row.TGKEPPANG),
-        TGGAL: normalizeValue(row.TGGAL),
-        BLGAL: normalizeValue(row.BLGAL),
-        BLGAL1: normalizeValue(row.BLGAL1),
-        THGAL: normalizeValue(row.THGAL),
-      }))
-      .filter((row) => row.NRP && !existingNRPSet.has(row.NRP));
+    // ===== Mapping & Filter =====
+    const mappedData = rawData.map((row) => ({
+      NAMA1: normalizeValue(row.NAMA1),
+      NAMA2: normalizeValue(row.NAMA2),
+      NAMA3: normalizeValue(row.NAMA3),
+      KDPKT: normalizeValue(row.KDPKT),
+      PANGKAT: normalizeValue(row.PANGKAT),
+      KORPS: normalizeValue(row.KORPS),
+      HAR: normalizeValue(row.HAR),
+      NRP: parseIntValue(row.NRP),
+      KELAHIRAN: parseDate(row.KELAHIRAN),
+      JAB1: normalizeValue(row.JAB1),
+      JAB2: normalizeValue(row.JAB2),
+      JAB3: normalizeValue(row.JAB3),
+      JAB4: normalizeValue(row.JAB4),
+      JAB5: normalizeValue(row.JAB5),
+      TMTTNI: normalizeValue(row.TMTTNI),
+      TGAB: normalizeValue(row.TGAB),
+      BLAB: normalizeValue(row.BLAB),
+      THAB: normalizeValue(row.THAB),
+      KDSAH: normalizeValue(row.KDSAH),
+      TMTMPP: normalizeValue(row.TMTMPP),
+      TGMPP: normalizeValue(row.TGMPP),
+      BLMPP: normalizeValue(row.BLMPP),
+      THMPP: normalizeValue(row.THMPP),
+      SDTG: normalizeValue(row.SDTG),
+      SDBL: normalizeValue(row.SDBL),
+      SDTH: normalizeValue(row.SDTH),
+      TMTHENTI: normalizeValue(row.TMTHENTI),
+      TGHT: normalizeValue(row.TGHT),
+      BLHT: normalizeValue(row.BLHT),
+      THHT: normalizeValue(row.THHT),
+      KET1: normalizeValue(row.KET1),
+      KET2: normalizeValue(row.KET2),
+      KET3: normalizeValue(row.KET3),
+      KET4: normalizeValue(row.KET4),
+      KET5: normalizeValue(row.KET5),
+      KET6: normalizeValue(row.KET6),
+      USUL: normalizeValue(row.USUL),
+      FLR: normalizeValue(row.FLR),
+      NOSKEP: normalizeValue(row.NOSKEP),
+      TGSKEP: normalizeValue(row.TGSKEP),
+      KEPPRES: normalizeValue(row.KEPPRES),
+      TGKEPP: normalizeValue(row.TGKEPP),
+      A: normalizeValue(row.A),
+      BL: normalizeValue(row.BL),
+      TH: normalizeValue(row.TH),
+      KDM: normalizeValue(row.KDM),
+      KEPPANG: normalizeValue(row.KEPPANG),
+      TGKEPPANG: parseDate(row.TGKEPPANG),
+      TGGAL: normalizeValue(row.TGGAL),
+      BLGAL: normalizeValue(row.BLGAL),
+      BLGAL1: normalizeValue(row.BLGAL1),
+      THGAL: normalizeValue(row.THGAL),
+    }));
 
-    if (newData.length === 0) {
+    const filteredData = mappedData.filter(
+      (row) => row.NRP && !existingNRPSet.has(row.NRP)
+    );
+
+    if (filteredData.length === 0) {
       return NextResponse.json(
         { success: false, message: "Semua data sudah ada di database" },
         { status: 200 }
       );
     }
 
-    // Insert data baru
-    const result = await prisma.personil.createMany({
-      data: newData,
-      skipDuplicates: true,
+    // ===== Insert dengan chunk =====
+    const chunkSize = 200;
+    let insertedCount = 0;
+
+    for (let i = 0; i < filteredData.length; i += chunkSize) {
+      const chunk = filteredData.slice(i, i + chunkSize);
+      const result = await prisma.personil.createMany({
+        data: chunk,
+        skipDuplicates: true,
+      });
+      insertedCount += result.count;
+    }
+
+    // ===== Tambah ke history =====
+    await prisma.history.create({
+      data: {
+        userId,
+        personilId: null,
+        action: `Import ${insertedCount} data personil baru`,
+        detail: null,
+      },
     });
 
     return NextResponse.json({
       success: true,
-      message: "Data baru berhasil diimport",
-      importedCount: result.count,
-      skippedCount: rawData.length - result.count,
+      message: "Data berhasil diimport",
+      importedCount: insertedCount,
+      skippedCount: rawData.length - insertedCount,
     });
   } catch (error) {
     console.error("Import Error:", error);

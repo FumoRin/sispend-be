@@ -27,11 +27,12 @@ model Users {
   role       Role      @default(USER)
   otp        String?
   otpExpires DateTime?
+  histories  History[]
   createdAt  DateTime  @default(now())
 }
 
 model Personil {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   NAMA1     String?
   NAMA2     String?
   NAMA3     String?
@@ -84,5 +85,19 @@ model Personil {
   BLGAL     String?
   BLGAL1    String?
   THGAL     String?
-  createdAt DateTime @default(now())
+  histories History[]
+  createdAt DateTime  @default(now())
+}
+
+model History {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  personilId Int? // opsional, bisa null
+  action     String
+  detail     String? // deskripsi tambahan, bisa null
+  createdAt  DateTime @default(now())
+
+  // Relasi
+  user     Users     @relation(fields: [userId], references: [id])
+  personil Personil? @relation(fields: [personilId], references: [id])
 }
