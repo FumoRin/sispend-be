@@ -16,8 +16,7 @@
     "next-swagger-doc": "^0.4.1",
     "nodemailer": "^7.0.5",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "swagger-ui-react": "^5.27.1"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
