@@ -38,7 +38,7 @@ import bcrypt from "bcrypt";
  *                   example: "dimasfaiz@gmail.com"
  *                 role:
  *                   type: string
- *                   example: "user"
+ *                   example: "ADMIN"
  *                 createdAt:
  *                   type: string
  *                   format: date-time
@@ -80,7 +80,13 @@ import bcrypt from "bcrypt";
  *     tags:
  *       - Users
  *     summary: Mengubah data user berdasarkan ID
- *     description: Mengubah data user berdasarkan ID
+ *     description: |
+ *       Mengubah data user berdasarkan ID.
+ *
+ *       **Catatan Penting:**
+ *       - Admin dapat mengubah user mana saja tanpa OTP
+ *       - Non-admin harus menyertakan `otpVerifiedToken` di header untuk mengubah data
+ *       - Hanya admin yang dapat mengubah role user
  *     parameters:
  *       - name: id
  *         in: path
@@ -88,6 +94,16 @@ import bcrypt from "bcrypt";
  *         description: ID user
  *         schema:
  *           type: integer
+ *       - name: otpVerifiedToken
+ *         in: header
+ *         required: false
+ *         description: |
+ *           Token verifikasi OTP (wajib untuk user non-Admin).
+ *           Dapatkan token ini dari endpoint /api/otp/check setelah verifikasi OTP.
+ *           Format: Bearer <otp-jwt-token>
+ *         schema:
+ *           type: string
+ *           example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *     security:
  *       - BearerAuth: []
  *     requestBody:
@@ -99,19 +115,39 @@ import bcrypt from "bcrypt";
  *             properties:
  *               name:
  *                 type: string
- *                 example: "Dimas Faiz"
+ *                 description: Nama user baru
+ *                 example: "Dimas Faiz Updated"
  *               email:
  *                 type: string
  *                 format: email
- *                 example: "dimasfaiz@gmail.com"
+ *                 description: Email user baru
+ *                 example: "dimasfaiz.updated@gmail.com"
  *               password:
  *                 type: string
- *                 example: "passwordrahasia"
+ *                 description: Password baru user
+ *                 minLength: 6
+ *                 example: "passwordbaru123"
  *               role:
  *                 type: string
- *                 enum: [admin, user]
- *                 example: "user"
- *             required: [name, email, password]
+ *                 enum: [ADMIN, USER]
+ *                 description: Role user (hanya admin yang dapat mengubah ini)
+ *                 example: "USER"
+ *             minProperties: 1
+ *           examples:
+ *             update_basic_info:
+ *               summary: Update basic information
+ *               value:
+ *                 name: "John Doe Updated"
+ *                 email: "john.updated@example.com"
+ *             update_password:
+ *               summary: Update password only
+ *               value:
+ *                 password: "newpassword123"
+ *             admin_update_role:
+ *               summary: Admin updating user role
+ *               value:
+ *                 name: "Jane Admin"
+ *                 role: "ADMIN"
  *     responses:
  *       200:
  *         description: Data user berhasil diubah
@@ -120,9 +156,22 @@ import bcrypt from "bcrypt";
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 id:
+ *                   type: integer
+ *                   example: 1
+ *                 name:
  *                   type: string
- *                   example: "User updated successfully"
+ *                   example: "Dimas Faiz Updated"
+ *                 email:
+ *                   type: string
+ *                   example: "dimasfaiz.updated@gmail.com"
+ *                 role:
+ *                   type: string
+ *                   example: "USER"
+ *                 createdAt:
+ *                   type: string
+ *                   format: date-time
+ *                   example: "2023-06-01T10:00:00.000Z"
  *       400:
  *         description: Bad Request
  *         content:
@@ -132,8 +181,15 @@ import bcrypt from "bcrypt";
  *               properties:
  *                 error:
  *                   type: string
- *             example:
- *               error: "Invalid user ID"
+ *             examples:
+ *               invalid_id:
+ *                 summary: Invalid user ID
+ *                 value:
+ *                   error: "Invalid user ID"
+ *               no_fields:
+ *                 summary: No fields provided
+ *                 value:
+ *                   error: "At least one field must be provided for update"
  *       401:
  *         description: Unauthorized
  *         content:
@@ -143,8 +199,19 @@ import bcrypt from "bcrypt";
  *               properties:
  *                 error:
  *                   type: string
- *             example:
- *               error: "Unauthorized"
+ *             examples:
+ *               no_token:
+ *                 summary: Missing authorization token
+ *                 value:
+ *                   error: "Unauthorized - Token missing or invalid"
+ *               invalid_otp_token:
+ *                 summary: Invalid OTP token for non-admin
+ *                 value:
+ *                   error: "Invalid or expired OTP token"
+ *               missing_otp_token:
+ *                 summary: Missing OTP token for non-admin
+ *                 value:
+ *                   error: "OTP verification token missing"
  *       403:
  *         description: Forbidden
  *         content:
@@ -155,7 +222,7 @@ import bcrypt from "bcrypt";
  *                 error:
  *                   type: string
  *             example:
- *               error: "Only admin can change user roles"
+ *               error: "Only admins can change user roles"
  *       404:
  *         description: Not Found
  *         content:
@@ -167,6 +234,17 @@ import bcrypt from "bcrypt";
  *                   type: string
  *             example:
  *               error: "User not found"
+ *       409:
+ *         description: Conflict
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Email already exists"
  *       500:
  *         description: Internal Server Error
  *         content:
@@ -182,22 +260,29 @@ import bcrypt from "bcrypt";
  *     tags:
  *       - Users
  *     summary: Menghapus data user berdasarkan ID
- *     description: Menghapus data user berdasarkan ID
+ *     description: |
+ *       Menghapus data user berdasarkan ID.
+ *
+ *       **Catatan Penting:**
+ *       - Admin dapat menghapus user mana saja tanpa OTP
+ *       - Non-admin harus menyertakan `otpVerifiedToken` di header untuk menghapus data
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID user
+ *         description: ID user yang akan dihapus
  *         schema:
  *           type: integer
  *       - name: otpVerifiedToken
  *         in: header
  *         required: false
- *         description: Token verifikasi OTP untuk user non-Admin
+ *         description: |
+ *           Token verifikasi OTP (wajib untuk user non-Admin).
+ *           Dapatkan token ini dari endpoint /api/otp/check setelah verifikasi OTP.
+ *           Format: Bearer <otp-jwt-token>
  *         schema:
  *           type: string
- *           default: "Bearer "
- *           example: "Bearer <otp-jwt-token>"
+ *           example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
  *     security:
  *       - BearerAuth: []
  *     responses:
@@ -231,8 +316,19 @@ import bcrypt from "bcrypt";
  *               properties:
  *                 error:
  *                   type: string
- *             example:
- *               error: "Unauthorized"
+ *             examples:
+ *               no_token:
+ *                 summary: Missing authorization token
+ *                 value:
+ *                   error: "Unauthorized - Token missing or invalid"
+ *               invalid_otp_token:
+ *                 summary: Invalid OTP token for non-admin
+ *                 value:
+ *                   error: "Invalid or expired OTP token"
+ *               missing_otp_token:
+ *                 summary: Missing OTP token for non-admin
+ *                 value:
+ *                   error: "OTP verification token missing"
  *       404:
  *         description: Not Found
  *         content:
@@ -255,7 +351,6 @@ import bcrypt from "bcrypt";
  *                   type: string
  *             example:
  *               error: "Internal Server Error"
- *
  */
 
 export async function GET(request, { params }) {
@@ -386,7 +481,8 @@ export async function DELETE(request, { params }) {
     }
 
     if (currentUser.role !== "ADMIN") {
-      const otpVerification = await verifyOtpToken(request);
+      const otpVerification = verifyOtpToken(request);
+
       if (otpVerification.error) {
         return Response.json(
           { error: otpVerification.error },

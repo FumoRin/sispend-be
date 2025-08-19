@@ -4,7 +4,10 @@ import prisma from "@/lib/prisma";
 export async function authUser(request) {
   const authHeader = request.headers.get("Authorization");
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return { status: 401, body: { error: "Unauthorized - Token missing or invalid" } };
+    return {
+      status: 401,
+      body: { error: "Unauthorized - Token missing or invalid" },
+    };
   }
 
   try {
@@ -18,16 +21,17 @@ export async function authUser(request) {
         name: true,
         email: true,
         role: true,
+        otp: true,
         password: true,
-        createdAt: true
-      }
+        createdAt: true,
+      },
     });
 
     if (!user) {
       return { status: 404, body: { error: "User not found" } };
     }
 
-    return { status: 200, user }; 
+    return { status: 200, user };
   } catch (err) {
     if (err.name === "JsonWebTokenError") {
       return { status: 401, body: { error: "Invalid token" } };
@@ -51,17 +55,33 @@ export async function authAdmin(request) {
 
 export function verifyOtpToken(request) {
   const otpAuthHeader = request.headers.get("otpVerifiedToken") || "";
+
   if (!otpAuthHeader.startsWith("Bearer ")) {
-    return { valid: false, error: "OTP verification token missing" };
+    return {
+      error: "OTP verification token missing",
+      status: 401,
+    };
   }
+
   const otpToken = otpAuthHeader.split(" ")[1];
+
   try {
-    const decoded = jwt.verify(otpToken, JWT_SECRET);
+    // Use the correct JWT_SECRET constant
+    const decoded = jwt.verify(otpToken, process.env.JWT_SECRET_KEY);
+
     if (!decoded.otpVerified) {
-      return { valid: false, error: "OTP not verified" };
+      return {
+        error: "OTP not verified",
+        status: 401,
+      };
     }
+
+    // Return success case - no error
     return { valid: true, decoded };
-  } catch {
-    return { valid: false, error: "Invalid or expired OTP token" };
+  } catch (err) {
+    return {
+      error: "Invalid or expired OTP token",
+      status: 401,
+    };
   }
 }
