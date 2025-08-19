@@ -18,7 +18,10 @@ export async function POST(request) {
     const file = formData.get("file");
 
     if (!file) {
-      return NextResponse.json({ error: "File tidak ditemukan" }, { status: 400 });
+      return NextResponse.json(
+        { error: "File tidak ditemukan" },
+        { status: 400 }
+      );
     }
 
     let rawData = [];
@@ -52,94 +55,116 @@ export async function POST(request) {
       );
     }
 
-    // ===== Normalisasi =====
-    const normalizeValue = (val) => (val === undefined || val === null ? null : String(val).trim());
+    // ===== Helper =====
+    const normalizeValue = (val) =>
+      val === undefined || val === null ? null : String(val).trim();
 
-    // Ambil semua NRP yang sudah ada di database
-    const existingNRP = new Set(
-      (await prisma.personil.findMany({ select: { NRP: true } }))
-        .map(p => p.NRP)
-        .filter(nrp => nrp) // hilangkan null
+    const parseDate = (val) => {
+      if (!val) return null;
+      const date = new Date(val);
+      return isNaN(date) ? null : date;
+    };
+
+    const parseIntValue = (val) => {
+      if (val === undefined || val === null || val === "") return null;
+      const n = parseInt(val, 10);
+      return isNaN(n) ? null : n;
+    };
+
+    // ===== Ambil NRP existing =====
+    const existingNRPs = await prisma.personil.findMany({
+      select: { NRP: true },
+    });
+    const existingNRPSet = new Set(
+      existingNRPs.map((item) => item.NRP).filter((nrp) => nrp)
     );
 
-    // Filter data baru untuk NRP yang belum ada
-    const filteredData = rawData.filter(row => {
-      const nrp = normalizeValue(row.NRP);
-      return nrp && !existingNRP.has(nrp);
-    });
+    // ===== Mapping & Filter =====
+    const mappedData = rawData.map((row) => ({
+      NAMA1: normalizeValue(row.NAMA1),
+      NAMA2: normalizeValue(row.NAMA2),
+      NAMA3: normalizeValue(row.NAMA3),
+      KDPKT: normalizeValue(row.KDPKT),
+      PANGKAT: normalizeValue(row.PANGKAT),
+      KORPS: normalizeValue(row.KORPS),
+      HAR: normalizeValue(row.HAR),
+      NRP: parseIntValue(row.NRP),
+      KELAHIRAN: parseDate(row.KELAHIRAN),
+      JAB1: normalizeValue(row.JAB1),
+      JAB2: normalizeValue(row.JAB2),
+      JAB3: normalizeValue(row.JAB3),
+      JAB4: normalizeValue(row.JAB4),
+      JAB5: normalizeValue(row.JAB5),
+      TMTTNI: normalizeValue(row.TMTTNI),
+      TGAB: normalizeValue(row.TGAB),
+      BLAB: normalizeValue(row.BLAB),
+      THAB: normalizeValue(row.THAB),
+      KDSAH: normalizeValue(row.KDSAH),
+      TMTMPP: normalizeValue(row.TMTMPP),
+      TGMPP: normalizeValue(row.TGMPP),
+      BLMPP: normalizeValue(row.BLMPP),
+      THMPP: normalizeValue(row.THMPP),
+      SDTG: normalizeValue(row.SDTG),
+      SDBL: normalizeValue(row.SDBL),
+      SDTH: normalizeValue(row.SDTH),
+      TMTHENTI: normalizeValue(row.TMTHENTI),
+      TGHT: normalizeValue(row.TGHT),
+      BLHT: normalizeValue(row.BLHT),
+      THHT: normalizeValue(row.THHT),
+      KET1: normalizeValue(row.KET1),
+      KET2: normalizeValue(row.KET2),
+      KET3: normalizeValue(row.KET3),
+      KET4: normalizeValue(row.KET4),
+      KET5: normalizeValue(row.KET5),
+      KET6: normalizeValue(row.KET6),
+      USUL: normalizeValue(row.USUL),
+      FLR: normalizeValue(row.FLR),
+      NOSKEP: normalizeValue(row.NOSKEP),
+      TGSKEP: normalizeValue(row.TGSKEP),
+      KEPPRES: normalizeValue(row.KEPPRES),
+      TGKEPP: normalizeValue(row.TGKEPP),
+      A: normalizeValue(row.A),
+      BL: normalizeValue(row.BL),
+      TH: normalizeValue(row.TH),
+      KDM: normalizeValue(row.KDM),
+      KEPPANG: normalizeValue(row.KEPPANG),
+      TGKEPPANG: parseDate(row.TGKEPPANG),
+      TGGAL: normalizeValue(row.TGGAL),
+      BLGAL: normalizeValue(row.BLGAL),
+      BLGAL1: normalizeValue(row.BLGAL1),
+      THGAL: normalizeValue(row.THGAL),
+    }));
 
+    const filteredData = mappedData.filter(
+      (row) => row.NRP && !existingNRPSet.has(row.NRP)
+    );
+
+    if (filteredData.length === 0) {
+      return NextResponse.json(
+        { success: false, message: "Semua data sudah ada di database" },
+        { status: 200 }
+      );
+    }
+
+    // ===== Insert dengan chunk =====
     const chunkSize = 200;
     let insertedCount = 0;
 
     for (let i = 0; i < filteredData.length; i += chunkSize) {
-      const chunk = filteredData.slice(i, i + chunkSize).map(row => ({
-        NAMA1: normalizeValue(row.NAMA1),
-        NAMA2: normalizeValue(row.NAMA2),
-        NAMA3: normalizeValue(row.NAMA3),
-        KDPKT: normalizeValue(row.KDPKT),
-        PANGKAT: normalizeValue(row.PANGKAT),
-        KORPS: normalizeValue(row.KORPS),
-        HAR: normalizeValue(row.HAR),
-        NRP: normalizeValue(row.NRP),
-        KELAHIRAN: normalizeValue(row.KELAHIRAN),
-        JAB1: normalizeValue(row.JAB1),
-        JAB2: normalizeValue(row.JAB2),
-        JAB3: normalizeValue(row.JAB3),
-        JAB4: normalizeValue(row.JAB4),
-        JAB5: normalizeValue(row.JAB5),
-        TMTTNI: normalizeValue(row.TMTTNI),
-        TGAB: normalizeValue(row.TGAB),
-        BLAB: normalizeValue(row.BLAB),
-        THAB: normalizeValue(row.THAB),
-        KDSAH: normalizeValue(row.KDSAH),
-        TMTMPP: normalizeValue(row.TMTMPP),
-        TGMPP: normalizeValue(row.TGMPP),
-        BLMPP: normalizeValue(row.BLMPP),
-        THMPP: normalizeValue(row.THMPP),
-        SDTG: normalizeValue(row.SDTG),
-        SDBL: normalizeValue(row.SDBL),
-        SDTH: normalizeValue(row.SDTH),
-        TMTHENTI: normalizeValue(row.TMTHENTI),
-        TGHT: normalizeValue(row.TGHT),
-        BLHT: normalizeValue(row.BLHT),
-        THHT: normalizeValue(row.THHT),
-        KET1: normalizeValue(row.KET1),
-        KET2: normalizeValue(row.KET2),
-        KET3: normalizeValue(row.KET3),
-        KET4: normalizeValue(row.KET4),
-        KET5: normalizeValue(row.KET5),
-        KET6: normalizeValue(row.KET6),
-        USUL: normalizeValue(row.USUL),
-        FLR: normalizeValue(row.FLR),
-        NOSKEP: normalizeValue(row.NOSKEP),
-        TGSKEP: normalizeValue(row.TGSKEP),
-        KEPPRES: normalizeValue(row.KEPPRES),
-        TGKEPP: normalizeValue(row.TGKEPP),
-        A: normalizeValue(row.A),
-        BL: normalizeValue(row.BL),
-        TH: normalizeValue(row.TH),
-        KDM: normalizeValue(row.KDM),
-        KEPPANG: normalizeValue(row.KEPPANG),
-        TGKEPPANG: normalizeValue(row.TGKEPPANG),
-        TGGAL: normalizeValue(row.TGGAL),
-        BLGAL: normalizeValue(row.BLGAL),
-        BLGAL1: normalizeValue(row.BLGAL1),
-        THGAL: normalizeValue(row.THGAL),
-      }));
-
+      const chunk = filteredData.slice(i, i + chunkSize);
       const result = await prisma.personil.createMany({
         data: chunk,
-        skipDuplicates: true, // backup jika ada NRP duplikat di chunk
+        skipDuplicates: true,
       });
       insertedCount += result.count;
     }
 
-    // ===== Tambahkan History =====
+    // ===== Tambah ke history =====
     await prisma.history.create({
       data: {
         userId,
         personilId: null,
-        action: `Melakukan import dengan total ${insertedCount} data`,
+        action: `Import ${insertedCount} data personil baru`,
         detail: null,
       },
     });
