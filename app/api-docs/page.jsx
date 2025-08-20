@@ -8,7 +8,7 @@ export default function DocsPage() {
     script.src = "https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js";
     script.onload = () => {
       window.SwaggerUIBundle({
-        url: "/api/docs", // points to your API spec
+        url: `${window.location.origin}/api/docs`,
         dom_id: "#swagger-ui",
         presets: [window.SwaggerUIBundle.presets.apis],
         layout: "BaseLayout",
