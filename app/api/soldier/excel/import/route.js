@@ -1,3 +1,78 @@
+/**
+ * @swagger
+ * /api/soldier/excel/import:
+ *   post:
+ *     tags:
+ *       - Soldier
+ *     summary: Import data personil dari file CSV atau XLSX
+ *     description: Menerima file CSV/XLSX via multipart/form-data dan menambahkan data personil yang belum ada berdasarkan NRP.
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: File CSV atau XLSX berisi data personil
+ *     responses:
+ *       200:
+ *         description: Hasil import
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 importedCount:
+ *                   type: integer
+ *                 skippedCount:
+ *                   type: integer
+ *       400:
+ *         description: File tidak ditemukan/format tidak didukung/empty
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             examples:
+ *               file_not_found:
+ *                 summary: File tidak ditemukan
+ *                 value:
+ *                   error: "File tidak ditemukan"
+ *               file_format_not_supported:
+ *                 summary: Format file tidak didukung
+ *                 value:
+ *                   error: "Format file tidak didukung. Gunakan format CSV atau XLSX"
+ *               file_empty:
+ *                 summary: File kosong
+ *                 value:
+ *                   error: "File kosong"
+ *       500:
+ *         description: Terjadi kesalahan pada server
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                 success:
+ *                   type: boolean
+ *               example:
+ *                 error: "Internal Server Error"
+ *                 success: false
+ */
+
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import Papa from "papaparse";
@@ -59,16 +134,10 @@ export async function POST(request) {
     const normalizeValue = (val) =>
       val === undefined || val === null ? null : String(val).trim();
 
-    const parseDate = (val) => {
-      if (!val) return null;
-      const date = new Date(val);
-      return isNaN(date) ? null : date;
-    };
-
-    const parseIntValue = (val) => {
-      if (val === undefined || val === null || val === "") return null;
-      const n = parseInt(val, 10);
-      return isNaN(n) ? null : n;
+    const normalizeNRP = (val) => {
+      if (val === undefined || val === null) return null;
+      const str = String(val).trim();
+      return str === "" ? null : str;
     };
 
     // ===== Ambil NRP existing =====
@@ -88,8 +157,8 @@ export async function POST(request) {
       PANGKAT: normalizeValue(row.PANGKAT),
       KORPS: normalizeValue(row.KORPS),
       HAR: normalizeValue(row.HAR),
-      NRP: parseIntValue(row.NRP),
-      KELAHIRAN: parseDate(row.KELAHIRAN),
+      NRP: normalizeNRP(row.NRP),
+      KELAHIRAN: normalizeValue(row.KELAHIRAN),
       JAB1: normalizeValue(row.JAB1),
       JAB2: normalizeValue(row.JAB2),
       JAB3: normalizeValue(row.JAB3),
@@ -128,7 +197,7 @@ export async function POST(request) {
       TH: normalizeValue(row.TH),
       KDM: normalizeValue(row.KDM),
       KEPPANG: normalizeValue(row.KEPPANG),
-      TGKEPPANG: parseDate(row.TGKEPPANG),
+      TGKEPPANG: normalizeValue(row.TGKEPPANG),
       TGGAL: normalizeValue(row.TGGAL),
       BLGAL: normalizeValue(row.BLGAL),
       BLGAL1: normalizeValue(row.BLGAL1),
