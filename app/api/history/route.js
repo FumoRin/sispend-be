@@ -50,62 +50,6 @@ import prisma from "@/lib/prisma";
  *                       KORPS: { type: string, nullable: true }
  *       500:
  *         description: Terjadi kesalahan pada server
- *   post:
- *     tags:
- *       - History
- *     summary: Tambahkan history tindakan
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required: [userId, action]
- *             properties:
- *               userId:
- *                 type: integer
- *               personilId:
- *                 type: integer
- *                 nullable: true
- *               action:
- *                 type: string
- *               detail:
- *                 type: string
- *                 nullable: true
- *     responses:
- *       201:
- *         description: History berhasil dibuat
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 id: { type: integer }
- *                 userId: { type: integer }
- *                 personilId: { type: integer, nullable: true }
- *                 action: { type: string }
- *                 detail: { type: string, nullable: true }
- *                 createdAt: { type: string, format: date-time }
- *                 user:
- *                   type: object
- *                   properties:
- *                     id: { type: integer }
- *                     name: { type: string }
- *                     email: { type: string, format: email }
- *                 personil:
- *                   type: object
- *                   nullable: true
- *                   properties:
- *                     id: { type: integer }
- *                     NAMA1: { type: string, nullable: true }
- *                     NAMA2: { type: string, nullable: true }
- *                     NAMA3: { type: string, nullable: true }
- *                     PANGKAT: { type: string, nullable: true }
- *                     KORPS: { type: string, nullable: true }
- *       400:
- *         description: Validasi input gagal
- *       500:
- *         description: Terjadi kesalahan pada server
  */
 export async function GET() {
   try {
