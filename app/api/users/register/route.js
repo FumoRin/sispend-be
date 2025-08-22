@@ -3,6 +3,110 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { authAdmin } from "@/middleware/verifyToken";
 
+/**
+ * @swagger
+ * /api/users/register:
+ *   post:
+ *     summary: Mendaftar user baru
+ *     description: Mendaftar user baru dengan nama, email, dan password
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: "Dimas Faiz"
+ *               email:
+ *                 type: string
+ *                 format: email
+ *                 example: "dimasfaiz@gmail.com"
+ *               password:
+ *                 type: string
+ *                 example: "passwordrahasia"
+ *               Role:
+ *                 type: string
+ *                 enum: [ADMIN, USER]
+ *                 example: "USER"
+ *             required: [name, email, password]
+ *     responses:
+ *       201:
+ *         description: User berhasil didaftarkan
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 token:
+ *                   type: string
+ *             example:
+ *               message: User registered successfully
+ *               token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       403:
+ *         description: Forbidden, hanya admin yang bisa mendaftarkan user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: Only existing admins can register a new admin
+ *       400:
+ *         description: Bad Request, tidak sesuai dengah format
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                 status:
+ *                   type: number
+ *             examples:
+ *               missingFields:
+ *                 summary: Name, email, and password are required
+ *                 value:
+ *                   error: Name, email, and password are required
+ *               invalidEmail:
+ *                 summary: Invalid email address
+ *                 value:
+ *                   error: Please provide a valid email address
+ *       409:
+ *         description: Conflict, email sudah terdaftar
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: Email already registered
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                 details:
+ *                   type: string
+ *                   nullable: true
+ *             example:
+ *               error: Internal Server Error
+ *               details: Something went wrong
+ */
+
 export async function POST(request) {
   try {
     const { name, email, password, role } = await request.json();
@@ -48,7 +152,7 @@ export async function POST(request) {
       );
     }
 
-    if (role) {
+    if (name || email) {
       const authCheck = await authAdmin(request);
       if (authCheck.status !== 200) {
         return new Response(
@@ -59,6 +163,7 @@ export async function POST(request) {
         );
       }
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = await prisma.users.create({
