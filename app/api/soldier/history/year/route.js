@@ -5,7 +5,7 @@
  *     tags:
  *       - Soldier
  *     summary: Dapatkan jumlah personil berdasarkan tahun TMT_MULAI
- *     description: Menghitung jumlah personil berdasarkan tahun dari field TMT_MULAI (format: "Januari 2024")
+ *     description: Menghitung jumlah personil berdasarkan tahun dari field TMT_MULAI
  *     responses:
  *       200:
  *         description: Jumlah personil berdasarkan tahun THHT
