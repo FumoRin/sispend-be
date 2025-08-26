@@ -25,7 +25,7 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const totalPersonil = await prisma.Personil.count();
+    const totalPersonil = await prisma.personil.count();
 
     return new Response(JSON.stringify({ total: totalPersonil }), {
       headers: {

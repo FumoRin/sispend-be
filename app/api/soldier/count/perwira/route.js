@@ -39,7 +39,7 @@ import prisma from "@/lib/prisma";
 
 export async function GET() {
   try {
-    const counts = await prisma.Personil.groupBy({
+    const counts = await prisma.personil.groupBy({
       by: ["PANGKAT"],
       _count: { PANGKAT: true },
     });

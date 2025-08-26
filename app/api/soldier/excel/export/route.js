@@ -62,61 +62,52 @@ export async function GET() {
     const workbook = new ExcelJS.Workbook();
     const sheet = workbook.addWorksheet("Personil");
 
-    // Semua kolom Personil
+    // Kolom sesuai schema Personil terbaru
     const columns = [
-      "NAMA1",
-      "NAMA2",
-      "NAMA3",
-      "KDPKT",
-      "PANGKAT",
-      "KORPS",
-      "HAR",
       "NRP",
-      "KELAHIRAN",
-      "JAB1",
-      "JAB2",
-      "JAB3",
-      "JAB4",
-      "JAB5",
-      "TMTTNI",
-      "TGAB",
-      "BLAB",
-      "THAB",
-      "KDSAH",
-      "TMTMPP",
-      "TGMPP",
-      "BLMPP",
-      "THMPP",
-      "SDTG",
-      "SDBL",
-      "SDTH",
-      "TMTHENTI",
-      "TGHT",
-      "BLHT",
-      "THHT",
-      "KET1",
-      "KET2",
-      "KET3",
-      "KET4",
-      "KET5",
-      "KET6",
-      "USUL",
-      "FLR",
-      "NOSKEP",
-      "TGSKEP",
-      "KEPPRES",
-      "TGKEPP",
-      "A",
-      "BL",
-      "TH",
-      "KDM",
-      "KEPPANG",
-      "TGKEPPANG",
-      "TGGAL",
-      "BLGAL",
-      "BLGAL1",
-      "THGAL",
-      "sumberData",
+      "NAMA",
+      "PANGKAT",
+      "KESATUAN",
+      "TTL",
+      "TMT_TNI",
+      "NKTPA",
+      "NPWP",
+      "AUTENTIK",
+      "MDK",
+      "MKG",
+      "GPT",
+      "NO_SKEP",
+      "TGL_SKEP",
+      "TMT_SKEP",
+      "TMT_MULAI",
+      "PENSPOK",
+      "SELAMA",
+      "PASANGAN",
+      "TTL_PASANGAN",
+      "ANAK_1",
+      "TTL_ANAK_1",
+      "STS_ANAK_1",
+      "ANAK_2",
+      "TTL_ANAK_2",
+      "STS_ANAK_2",
+      "ANAK_3",
+      "TTL_ANAK_3",
+      "STS_ANAK_3",
+      "ANAK_4",
+      "TTL_ANAK_4",
+      "STS_ANAK_4",
+      "PENSPOK_WARI",
+      "RP1",
+      "BRP1",
+      "RP2",
+      "BRP2",
+      "TMB_PN",
+      "ALAMAT",
+      "ALAMAT_ASABRI",
+      "UTAMA",
+      "NO_SERI",
+      "NO_SKEP2",
+      "TGL_SKEP2",
     ];
 
     // Tambahkan header
@@ -137,9 +128,12 @@ export async function GET() {
     // Tambahkan data
     data.forEach((row) => {
       sheet.addRow(
-        columns.map((col) =>
-          row[col] !== null && row[col] !== undefined ? String(row[col]) : ""
-        )
+        columns.map((col) => {
+          const value = row[col];
+          if (value === null || value === undefined) return "";
+          if (value instanceof Date) return value.toISOString().slice(0, 10);
+          return String(value);
+        })
       );
     });
 
