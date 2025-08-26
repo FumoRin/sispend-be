@@ -66,11 +66,9 @@ export async function GET() {
         personil: {
           select: {
             id: true,
-            NAMA1: true,
-            NAMA2: true,
-            NAMA3: true,
+            NAMA: true,
             PANGKAT: true,
-            KORPS: true,
+            KESATUAN: true,
           },
         },
       },
@@ -114,11 +112,9 @@ export async function POST(request) {
         personil: {
           select: {
             id: true,
-            NAMA1: true,
-            NAMA2: true,
-            NAMA3: true,
+            NAMA: true,
             PANGKAT: true,
-            KORPS: true,
+            KESATUAN: true,
           },
         },
       },
