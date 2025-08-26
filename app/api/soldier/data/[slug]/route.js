@@ -13,9 +13,10 @@ export async function GET(req, { params }) {
     const total = await prisma.personil.count({
       where: {
         OR: [
-          { NAMA1: { contains: search, mode: "insensitive" } },
+          { NAMA: { contains: search, mode: "insensitive" } },
           { NRP: { contains: search, mode: "insensitive" } },
           { PANGKAT: { contains: search, mode: "insensitive" } },
+          { KESATUAN: { contains: search, mode: "insensitive" } },
         ],
       },
     });
@@ -23,14 +24,15 @@ export async function GET(req, { params }) {
     const personil = await prisma.personil.findMany({
       where: {
         OR: [
-          { NAMA1: { contains: search, mode: "insensitive" } },
+          { NAMA: { contains: search, mode: "insensitive" } },
           { NRP: { contains: search, mode: "insensitive" } },
           { PANGKAT: { contains: search, mode: "insensitive" } },
+          { KESATUAN: { contains: search, mode: "insensitive" } },
         ],
       },
       skip,
       take: limit,
-      orderBy: { NAMA1: "asc" },
+      orderBy: { NAMA: "asc" },
     });
 
     if (personil.length === 0) {
