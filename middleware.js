@@ -3,11 +3,14 @@ import { NextResponse } from "next/server";
 const allowedOrigins = [
   "http://localhost:3000", // Kalo dev server nya ada 2, mampus aja tuh yang kedua kena reject
   "https://fe-sispensad.vercel.app",
+  "https://sispend-be-orpin.vercel.app",
+  "https://sispend-be.vercel.app",
 ];
 
 export function middleware(request) {
   const origin = request.headers.get("origin");
-  const previewRegex = /^https:\/\/fe-sispensad-[a-z0-9-]+\.vercel\.app$/i; // Untuk preview deployment
+  const previewRegex =
+    /^https:\/\/(?:fe-sispensad|sispend-be|sispend-be-orpin)(?:-[a-z0-9-]+)*\.vercel\.app$/i; // Untuk preview deployment FE & BE (upstream dan fork)
   const isAllowedOrigin =
     !!origin && (allowedOrigins.includes(origin) || previewRegex.test(origin));
 
