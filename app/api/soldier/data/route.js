@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 
 /**
  * @swagger
- * /api/data/soldier/data:
+ * /api/soldier/data:
  *   get:
  *     summary: Ambil daftar personil
  *     description: Mengambil data personil dengan filter opsional dan pagination, ini endpoinnya "/api/data/soldier/data?page=1&limit=10&nama=Ferdi&pangkat=Brigjen" nah untuk nrp, nama, pangkat, kesatuan itu opsional
