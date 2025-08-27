@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { authAdmin } from "@/middleware/verifyToken";
 
 /**
  * @swagger
@@ -47,6 +48,17 @@ import bcrypt from "bcrypt";
  *             example:
  *               message: User registered successfully
  *               token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *       403:
+ *         description: Forbidden, hanya admin yang bisa mendaftarkan user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: Only existing admins can register a new admin
  *       400:
  *         description: Bad Request, tidak sesuai dengah format
  *         content:
@@ -138,6 +150,18 @@ export async function POST(request) {
           headers: { "Content-Type": "application/json" },
         }
       );
+    }
+
+    if (name || email) {
+      const authCheck = await authAdmin(request);
+      if (authCheck.status !== 200) {
+        return new Response(
+          JSON.stringify({
+            error: "Only existing admins can register a new admin",
+          }),
+          { status: 403, headers: { "Content-Type": "application/json" } }
+        );
+      }
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

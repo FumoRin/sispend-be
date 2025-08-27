@@ -20,12 +20,76 @@ enum Role {
 }
 
 model Users {
-  id          Int      @id @default(autoincrement())
-  name        String
-  email       String   @unique
-  password    String
-  role        Role     @default(USER)
-  otp         String?     
-  otpExpires  DateTime?
-  createdAt   DateTime @default(now())
+  id         Int       @id @default(autoincrement())
+  name       String
+  email      String    @unique
+  password   String
+  role       Role      @default(USER)
+  otp        String?
+  otpExpires DateTime?
+  histories  History[]
+  createdAt  DateTime  @default(now())
+}
+
+model Personil {
+  id            Int       @id @default(autoincrement())
+  NAMA          String
+  PANGKAT       String?
+  NRP           String    @unique
+  KESATUAN      String?
+  TTL           DateTime
+  TMT_TNI       String?
+  NKTPA         String?
+  NPWP          String?
+  AUTENTIK      String?
+  MDK           Int?
+  MKG           Int?
+  GPT           Int?
+  NO_SKEP       String?
+  TGL_SKEP      DateTime?
+  TMT_SKEP      DateTime?
+  TMT_MULAI     String?
+  PENSPOK       Int?
+  SELAMA        String?
+  PASANGAN      String?
+  TTL_PASANGAN  DateTime?
+  ANAK_1        String?
+  TTL_ANAK_1    DateTime?
+  STS_ANAK_1    String?
+  ANAK_2        String?
+  TTL_ANAK_2    DateTime?
+  STS_ANAK_2    String?
+  ANAK_3        String?
+  TTL_ANAK_3    DateTime?
+  STS_ANAK_3    String?
+  ANAK_4        String?
+  TTL_ANAK_4    DateTime?
+  STS_ANAK_4    String?
+  PENSPOK_WARI  Int?
+  RP1           Int?
+  BRP1          Int?
+  RP2           Int?
+  BRP2          Int?
+  TMB_PN        String?
+  ALAMAT        String?
+  ALAMAT_ASABRI String?
+  UTAMA         String?
+  NO_SERI       String?
+  NO_SKEP2      String?
+  TGL_SKEP2     String?
+  histories     History[]
+  createdAt     DateTime  @default(now())
+}
+
+model History {
+  id         Int      @id @default(autoincrement())
+  userId     Int
+  personilId Int? // opsional, bisa null
+  action     String
+  detail     String? // deskripsi tambahan, bisa null
+  createdAt  DateTime @default(now())
+
+  // Relasi
+  user     Users     @relation(fields: [userId], references: [id])
+  personil Personil? @relation(fields: [personilId], references: [id])
 }
