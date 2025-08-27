@@ -8,7 +8,8 @@ const allowedOrigins = [
 export function middleware(request) {
   const origin = request.headers.get("origin");
   const previewRegex = /^https:\/\/fe-sispensad-[a-z0-9-]+\.vercel\.app$/i; // Untuk preview deployment
-  !!origin && (allowedOrigins.includes(origin) || previewRegex.test(origin));
+  const isAllowedOrigin =
+    !!origin && (allowedOrigins.includes(origin) || previewRegex.test(origin));
 
   const headers = new Headers();
   if (isAllowedOrigin) {
