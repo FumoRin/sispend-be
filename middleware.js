@@ -26,7 +26,7 @@ export function middleware(request) {
   );
   headers.set(
     "Access-Control-Allow-Headers",
-    "Content-Type, Authorization, X-Requested-With"
+    "Content-Type, Authorization, X-Requested-With, otpverifiedtoken"
   );
 
   if (request.method === "OPTIONS") {
