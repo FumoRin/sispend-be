@@ -45,16 +45,14 @@
  */
 
 import prisma from "@/lib/prisma";
-import { extractTahunDariBulanTahun } from "@/lib/dateParser";
+import { extractBulanTahun } from "@/lib/dateParser";
 
 export async function GET() {
   try {
-    const totalPersonil = await prisma.Personil.count();
     const allPersonil = await prisma.Personil.findMany({
       select: {
         id: true,
         NAMA: true,
-        NRP: true,
         TMT_MULAI: true,
       },
       where: {
@@ -64,42 +62,35 @@ export async function GET() {
       },
     });
 
-    // Parse TMT_MULAI and count by year
-    const yearCounts = {};
-    let validYearCount = 0;
-    let invalidYearCount = 0;
+    const yearMonthCounts = {};
 
     allPersonil.forEach((personil) => {
-      if (personil.TMT_MULAI && personil.TMT_MULAI.trim() !== "") {
-        // Parse the year from TMT_MULAI field using Indonesian month-year format
-        const year = extractTahunDariBulanTahun(personil.TMT_MULAI);
+      const { bulan, tahun } = extractBulanTahun(personil.TMT_MULAI);
 
-        if (year !== null) {
-          yearCounts[year] = (yearCounts[year] || 0) + 1;
-          validYearCount++;
-        } else {
-          invalidYearCount++;
-          console.log(
-            `Invalid TMT_MULAI format: "${personil.TMT_MULAI}" for personil ID: ${personil.id}`
-          );
+      if (tahun !== null && bulan !== null) {
+        if (!yearMonthCounts[tahun]) {
+          yearMonthCounts[tahun] = {
+            year: tahun,
+            label: `Tahun ${tahun}`,
+            januari: 0,
+            februari: 0,
+            maret: 0,
+            april: 0,
+            mei: 0,
+            juni: 0,
+            juli: 0,
+            agustus: 0,
+            september: 0,
+            oktober: 0,
+            november: 0,
+            desember: 0,
+          };
         }
+        yearMonthCounts[tahun][bulan]++;
       }
     });
 
-    // === DEBUGGING ===
-    // console.log("Total Personil records in database:", totalPersonil);
-    // console.log("Valid year count:", validYearCount);
-    // console.log("Invalid year count:", invalidYearCount);
-    // console.log("Year counts object:", yearCounts);
-
-    // Convert to array format for easier consumption
-    const yearData = Object.entries(yearCounts)
-      .map(([year, count]) => ({
-        year: parseInt(year),
-        count: count,
-        label: `Tahun ${year}`,
-      }))
-      .sort((a, b) => a.year - b.year);
+    const yearData = Object.values(yearMonthCounts).sort((a, b) => a.year - b.year);
 
     return Response.json({
       success: true,
@@ -107,14 +98,11 @@ export async function GET() {
       message: "Data berhasil diambil",
     });
   } catch (error) {
-    console.error("Error fetching year data:", error);
+    console.error("Error fetching year-month data:", error);
     return Response.json(
-      {
-        success: false,
-        message: "Terjadi kesalahan saat mengambil data",
-        error: error.message,
-      },
+      { success: false, message: "Terjadi kesalahan saat mengambil data", error: error.message },
       { status: 500 }
     );
   }
 }
+
