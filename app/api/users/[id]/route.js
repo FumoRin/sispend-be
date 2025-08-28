@@ -389,12 +389,20 @@ export async function GET(request, { params }) {
 
 export async function PUT(request, { params }) {
   try {
+    let currentUser = null;
     const authCheck = await authUser(request);
-    if (authCheck.status !== 200) {
-      return Response.json(authCheck.body, { status: authCheck.status });
+    if (authCheck.status === 200) {
+      currentUser = authCheck.user;
+    } else {
+      const otpVerification = await verifyOtpToken(request);
+      if (otpVerification.error) {
+        return Response.json(
+          { error: otpVerification.error },
+          { status: otpVerification.status }
+        );
+      }
+      currentUser = otpVerification.user;
     }
-
-    const currentUser = authCheck.user;
     const { id } = await params;
     const userId = parseInt(id);
 
@@ -411,7 +419,7 @@ export async function PUT(request, { params }) {
       );
     }
 
-    const isAdmin = currentUser.role === "ADMIN";
+    const isAdmin = currentUser?.role === "ADMIN";
 
     if (role && !isAdmin) {
       return Response.json(
@@ -419,17 +427,6 @@ export async function PUT(request, { params }) {
         { status: 403 }
       );
     }
-
-    if (!isAdmin) {
-      const otpVerification = await verifyOtpToken(request);
-      if (otpVerification.error) {
-        return Response.json(
-          { error: otpVerification.error },
-          { status: otpVerification.status }
-        );
-      }
-    }
-
     const updateData = {};
     if (name) updateData.name = name;
     if (email) updateData.email = email;

@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
 const allowedOrigins = [
-  "http://localhost:3000", // Kalo dev server nya ada 2, mampus aja tuh yang kedua kena reject
+  "http://localhost:3000",
+  "http://localhost:3001",
   "https://fe-sispensad.vercel.app",
   "https://sispend-be-orpin.vercel.app",
   "https://sispend-be.vercel.app",
