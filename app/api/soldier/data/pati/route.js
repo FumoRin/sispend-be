@@ -55,71 +55,8 @@
  *                       KESATUAN:
  *                         type: string
  *                         example: "Denmabesad"
- *   post:
- *     tags:
- *       - Soldier
- *     summary: Cari data personil PATI
- *     description: Mencari data personil PATI berdasarkan NAMA atau NRP
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               NAMA:
- *                 type: string
- *                 description: Nama personil untuk pencarian (opsional jika NRP tersedia)
- *                 example: "Ferdi"
- *               NRP:
- *                 type: string
- *                 description: NRP personil untuk pencarian (opsional jika NAMA tersedia)
- *                 example: "123456"
- *             required:
- *               - NAMA
- *             anyOf:
- *               - required: [NAMA]
- *               - required: [NRP]
- *     responses:
- *       200:
- *         description: Hasil pencarian data personil PATI
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 status:
- *                   type: integer
- *                   example: 200
- *                 success:
- *                   type: boolean
- *                   example: true
- *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: integer
- *                         example: 1
- *                       NRP:
- *                         type: string
- *                         example: "123456"
- *                       NAMA:
- *                         type: string
- *                         example: "Ferdi Kurniawan"
- *                       PANGKAT:
- *                         type: string
- *                         example: "Brigjen"
- *                       KESATUAN:
- *                         type: string
- *                         example: "Denmabesad"
- *                 count:
- *                   type: integer
- *                   description: Jumlah data yang ditemukan
- *                   example: 1
- *       400:
- *         description: Bad Request - Field NAMA atau NRP dibutuhkan untuk pencarian
+ *      500:
+ *         description: Terjadi kesalahan server
  *         content:
  *           application/json:
  *             schema:
@@ -127,17 +64,7 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   example: "Field NAMA atau NRP dibutuhkan untuk pencarian."
- *       500:
- *         description: Internal Server Error
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: "Internal Server Error"
+ *                   example: "Terjadi kesalahan server"
  */
 
 import prisma from "@/lib/prisma";
@@ -194,66 +121,6 @@ export async function GET(request) {
       status: 500,
       success: false,
       error: "Internal Server Error",
-    });
-  }
-}
-
-export async function POST(request) {
-  try {
-    const body = await request.json();
-
-    if (!body?.NAMA && !body?.NRP) {
-      return new Response(
-        JSON.stringify({
-          error: "Field NAMA atau NRP dibutuhkan untuk pencarian.",
-        }),
-        { status: 400 }
-      );
-    }
-
-    const where = {
-      AND: [
-        {
-          PANGKAT: { not: null },
-        },
-        // Filter by PATI ranks
-        {
-          OR: PATI_RANKS.map((r) => ({
-            PANGKAT: { contains: r, mode: "insensitive" },
-          })),
-        },
-      ],
-    };
-
-    // Add search conditions for NAMA or NRP
-    if (body.NAMA && body.NRP) {
-      where.AND.push({
-        OR: [
-          { NAMA: { contains: body.NAMA, mode: "insensitive" } },
-          { NRP: { contains: body.NRP, mode: "insensitive" } },
-        ],
-      });
-    } else if (body.NAMA) {
-      where.AND.push({ NAMA: { contains: body.NAMA, mode: "insensitive" } });
-    } else if (body.NRP) {
-      where.AND.push({ NRP: { contains: body.NRP, mode: "insensitive" } });
-    }
-
-    const searchResults = await prisma.personil.findMany({
-      where,
-      orderBy: { id: "desc" },
-    });
-
-    return Response.json({
-      status: 200,
-      success: true,
-      data: searchResults,
-      count: searchResults.length,
-    });
-  } catch (error) {
-    console.error("PATI POST search error:", error);
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
-      status: 500,
     });
   }
 }
